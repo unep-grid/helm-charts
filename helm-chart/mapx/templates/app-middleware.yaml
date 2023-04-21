@@ -1,0 +1,16 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: mx-app-{{ .Release.Name }}
+  labels:
+    app: app
+spec:
+  headers:
+    accessControlAllowMethods:
+      - 'GET'
+    accessControlAllowOriginList:
+      - '*'
+    accessControlMaxAge: 100
+    addVaryHeader: true
+    customResponseHeaders:
+      cacheControl: 'no-cache'

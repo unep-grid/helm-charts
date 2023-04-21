@@ -1,0 +1,58 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mx-env-{{ .Release.Name }}
+data:
+  API_HOST: mx-api-{{ .Release.Name }}
+  API_HOST_PUBLIC: api.{{ .Values.endPoint }}
+  API_PORT: "3030"
+  API_PORT_PUBLIC: "80"
+  GEOSERVER_ADMIN_USERNAME: admin
+  GEOSERVER_CONTACT_CITY: {{ .Values.geoserverContactCity }}
+  GEOSERVER_CONTACT_COUNTRY: {{ .Values.geoserverContactCountry }}
+  GEOSERVER_CONTACT_EMAIL: {{ .Values.geoserverContactEmail }}
+  GEOSERVER_CONTACT_ORGANISATION: {{ .Values.geoserverContactOrganisation | quote }}
+  GEOSERVER_CONTACT_PERSON: {{ .Values.geoserverContactPerson }}
+  GEOSERVER_CONTACT_PERSON_POSITION: Admin
+  GEOSERVER_DATA_DIR: /geoserver/db
+  GEOSERVER_HOME: /geoserver
+  GEOSERVER_URL: {{ .Values.protocol }}mx-geoserver-{{ .Release.Name }}:9000/geoserver/rest
+  GEOSERVER_URL_PUBLIC: {{ .Values.protocol }}geoserver.{{ .Values.endPoint }}/geoserver
+  MAIL_BOT: {{ .Values.mailBot }}
+  MAIL_FROM: {{ .Values.mailFrom }}
+  MAIL_GUEST: {{ .Values.mailGuest }}
+  MAIL_HOST: {{ .Values.mailHost }}
+  MAIL_PORT: {{ .Values.mailPort | quote }}
+  MAIL_USER: {{ .Values.mailUser }}
+  MAPX_DB_LOG_LEVELS: '["ERROR","WARNING","MESSAGE","LOG","USER_ACTION"]'
+  MAPX_DEV_MEMBERS: {{ .Values.mapxDevMembers | default "[]" | quote }}
+  MAPX_MIRROR_RATE_LIMIT: "2000"
+  MAPX_MIRROR_RATE_WINDOW_MINUTES: "15"
+  MAPX_MODE: {{ .Values.mapxMode | default "[]" | quote }}
+  MAPX_PATH_DOWNLOAD: /shared/download
+  MAPX_PATH_DOWNLOAD_URL: /download/
+  MAPX_PATH_USERDATA: /shared/userdata
+  MAPX_PATH_USERDATA_URL: /userdata/
+  MAPX_PROJECT_CREATORS: {{ .Values.mapxProjectCreators | default "[]" | quote }}
+  MAPX_PROJECT_DEFAULT: {{ .Values.mapxProjectDefault }}
+  MAPX_ROOT_MODE_MEMBERS: {{ .Values.mapxRootModeMembers | default "[]" | quote }}
+  MEILI_HOST: mx-search-{{ .Release.Name }}
+  MEILI_HOST_PUBLIC: search.{{ .Values.endPoint }}
+  MEILI_NO_ANALYTICS: "true"
+  MEILI_NO_SENTRY: "true"
+  MEILI_PORT: "7700"
+  MEILI_PORT_PUBLIC: "80"
+  MEILI_PROTOCOL_PUBLIC: {{ .Values.protocol }}
+  POSTGRES_DB: {{ .Values.postgresDb }}
+  POSTGRES_HOST: {{ .Values.postgresHost }}
+  POSTGRES_POOL_MAX: "5"
+  POSTGRES_POOL_MIN: "1"
+  POSTGRES_PORT: {{ .Values.postgresPort | quote}}
+  POSTGRES_SCHEMA_MAIN: public
+  POSTGRES_USER: postgres
+  POSTGRES_USER_CUSTOM: mapxc
+  POSTGRES_USER_READ: mapxr
+  POSTGRES_USER_WRITE: mapxw
+  REDIS_HOST: mx-redis-{{ .Release.Name }}
+  REDIS_PORT: "6379"
+  SHINY_PORT: "3838"

@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mx-redis-{{ .Release.Name }}
+  labels:
+    app: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      name: mx-redis-{{ .Release.Name }}
+      labels:
+        app: redis
+        network/net-backend: "true"
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - aunepuks110
+                - aunepuks111
+      restartPolicy: Always
+      containers:
+        - name: mx-redis-{{ .Release.Name }}
+          image: {{ .Values.redisImage | default "redis" }}:{{ .Values.redisTag }}
+          args:
+            - redis-server
+            - /usr/local/etc/redis/redis.conf
+          ports:
+            - containerPort: 6379
+          resources:
+            requests:
+              memory: "{{ .Values.redisMaxMemoryGb | int }}Gi"
+              cpu: "1000m"
+            limits:
+              memory: "{{ .Values.redisMaxMemoryGb | int }}Gi"
+              cpu: "1000m"
+          volumeMounts:
+            - name: mx-redis-config-{{ .Release.Name }}
+              mountPath: /usr/local/etc/redis/redis.conf
+              readOnly: true
+      volumes:
+        - name: mx-redis-config-{{ .Release.Name }}
+          configMap:
+            name: mx-redis-config-{{ .Release.Name }}
+            items:
+              - key: redis.conf
+                path: redis.conf
+            

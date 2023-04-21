@@ -1,0 +1,17 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: mx-geoserver-{{ .Release.Name }}
+  labels:
+    app: geoserver
+spec:
+  entryPoints:
+    - {{ .Values.entryPoint }}
+  routes:
+  - kind: Rule
+    match: Host(`geoserver.{{ .Values.endPoint }}`)
+    services:
+    - name: mx-geoserver-{{ .Release.Name }}
+      port: 9000
+    middlewares:
+      - name: mx-geoserver-{{ .Release.Name }}

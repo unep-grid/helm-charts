@@ -1,0 +1,17 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: mx-app-{{ .Release.Name }}
+  labels:
+    app: app
+spec:
+  entryPoints:
+    - {{ .Values.entryPoint }}
+  routes:
+  - kind: Rule
+    match: Host(`app.{{ .Values.endPoint }}`)
+    services:
+    - name: mx-app-{{ .Release.Name }}
+      port: 3838
+    middlewares:
+      - name: mx-app-{{ .Release.Name }}

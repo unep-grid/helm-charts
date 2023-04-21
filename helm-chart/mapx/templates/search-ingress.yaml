@@ -1,0 +1,17 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: mx-search-{{ .Release.Name }}
+  labels:
+    app: search
+spec:
+  entryPoints:
+    - {{ .Values.entryPoint }}
+  routes:
+  - kind: Rule
+    match: Host(`search.{{ .Values.endPoint }}`)
+    services:
+    - name: mx-search-{{ .Release.Name }}
+      port: 7700
+    middlewares:
+      - name: mx-search-{{ .Release.Name }}

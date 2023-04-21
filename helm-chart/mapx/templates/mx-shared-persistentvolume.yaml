@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mx-shared-{{ .Release.Name }}
+spec:
+  storageClassName: ""
+  capacity:
+    storage: 50Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy:
+  mountOptions:
+    - hard
+    - nfsvers=3
+    - nolock
+    - retry=5
+  nfs:
+    server: nasac-evs2.unige.ch
+    path: "/unep-grid-data/k8s/"
+    readOnly: false
+    

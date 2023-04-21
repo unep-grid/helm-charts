@@ -1,0 +1,381 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mx-api-{{ .Release.Name }}
+  labels:
+    app: api
+spec:
+  replicas: {{ .Values.apiReplicas | default 4 | int }}
+  selector:
+    matchLabels:
+      app: api
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      name: mx-api-{{ .Release.Name }}
+      labels:
+        network/net-backend: "true"
+        network/net-frontend: "true"
+        app: api
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - aunepuks110
+                - aunepuks111
+      restartPolicy: Always
+      securityContext:
+        runAsUser: 12345
+        runAsGroup: 101
+        fsGroup: 101
+        fsGroupChangePolicy: "OnRootMismatch"
+      initContainers:
+        - name: nfs-owner-change
+          image: busybox
+          securityContext:
+            runAsUser: 0
+          command: ["/bin/sh", "-c", "chmod 0775 /shared; chgrp 101 /shared"]
+          volumeMounts:
+            - name: mx-shared-{{ .Release.Name }}
+              mountPath: /shared
+      containers:
+        - name: mx-api-{{ .Release.Name }}
+          image: {{ .Values.apiImage | default "fredmoser/mapx_api" }}:{{ .Values.apiTag }}
+          env:
+            - name: API_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: API_HOST
+                  name: mx-env-{{ .Release.Name }}
+            - name: API_HOST_PUBLIC
+              valueFrom:
+                configMapKeyRef:
+                  key: API_HOST_PUBLIC
+                  name: mx-env-{{ .Release.Name }}
+            - name: API_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: API_PORT
+                  name: mx-env-{{ .Release.Name }}
+            - name: API_PORT_PUBLIC
+              valueFrom:
+                configMapKeyRef:
+                  key: API_PORT_PUBLIC
+                  name: mx-env-{{ .Release.Name }}
+            - name: GEOSERVER_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: GEOSERVER_ADMIN_PASSWORD
+                  name: mx-secret-{{ .Release.Name }}
+            - name: GEOSERVER_ADMIN_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  key: GEOSERVER_ADMIN_USERNAME
+                  name: mx-env-{{ .Release.Name }}
+            - name: GEOSERVER_CONTACT_CITY
+              valueFrom:
+                configMapKeyRef:
+                  key: GEOSERVER_CONTACT_CITY
+                  name: mx-env-{{ .Release.Name }}
+            - name: GEOSERVER_CONTACT_COUNTRY
+              valueFrom:
+                configMapKeyRef:
+                  key: GEOSERVER_CONTACT_COUNTRY
+                  name: mx-env-{{ .Release.Name }}
+            - name: GEOSERVER_CONTACT_EMAIL
+              valueFrom:
+                configMapKeyRef:
+                  key: GEOSERVER_CONTACT_EMAIL
+                  name: mx-env-{{ .Release.Name }}
+            - name: GEOSERVER_CONTACT_ORGANISATION
+              valueFrom:
+                configMapKeyRef:
+                  key: GEOSERVER_CONTACT_ORGANISATION
+                  name: mx-env-{{ .Release.Name }}
+            - name: GEOSERVER_CONTACT_PERSON
+              valueFrom:
+                configMapKeyRef:
+                  key: GEOSERVER_CONTACT_PERSON
+                  name: mx-env-{{ .Release.Name }}
+            - name: GEOSERVER_CONTACT_PERSON_POSITION
+              valueFrom:
+                configMapKeyRef:
+                  key: GEOSERVER_CONTACT_PERSON_POSITION
+                  name: mx-env-{{ .Release.Name }}
+            - name: GEOSERVER_DATA_DIR
+              valueFrom:
+                configMapKeyRef:
+                  key: GEOSERVER_DATA_DIR
+                  name: mx-env-{{ .Release.Name }}
+            - name: GEOSERVER_HOME
+              valueFrom:
+                configMapKeyRef:
+                  key: GEOSERVER_HOME
+                  name: mx-env-{{ .Release.Name }}
+            - name: GEOSERVER_URL
+              valueFrom:
+                configMapKeyRef:
+                  key: GEOSERVER_URL
+                  name: mx-env-{{ .Release.Name }}
+            - name: GEOSERVER_URL_PUBLIC
+              valueFrom:
+                configMapKeyRef:
+                  key: GEOSERVER_URL_PUBLIC
+                  name: mx-env-{{ .Release.Name }}
+            - name: MAIL_ADMIN
+              valueFrom:
+                secretKeyRef:
+                  key: MAIL_ADMIN
+                  name: mx-secret-{{ .Release.Name }}
+            - name: MAIL_BOT
+              valueFrom:
+                configMapKeyRef:
+                  key: MAIL_BOT
+                  name: mx-env-{{ .Release.Name }}
+            - name: MAIL_FROM
+              valueFrom:
+                configMapKeyRef:
+                  key: MAIL_FROM
+                  name: mx-env-{{ .Release.Name }}
+            - name: MAIL_GUEST
+              valueFrom:
+                configMapKeyRef:
+                  key: MAIL_GUEST
+                  name: mx-env-{{ .Release.Name }}
+            - name: MAIL_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: MAIL_HOST
+                  name: mx-env-{{ .Release.Name }}
+            - name: MAIL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: MAIL_PASSWORD
+                  name: mx-secret-{{ .Release.Name }}
+            - name: MAIL_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: MAIL_PORT
+                  name: mx-env-{{ .Release.Name }}
+            - name: MAIL_USER
+              valueFrom:
+                configMapKeyRef:
+                  key: MAIL_USER
+                  name: mx-env-{{ .Release.Name }}
+            - name: MAPX_DB_LOG_LEVELS
+              valueFrom:
+                configMapKeyRef:
+                  key: MAPX_DB_LOG_LEVELS
+                  name: mx-env-{{ .Release.Name }}
+            - name: MAPX_DEV_MEMBERS
+              valueFrom:
+                configMapKeyRef:
+                  key: MAPX_DEV_MEMBERS
+                  name: mx-env-{{ .Release.Name }}
+            - name: MAPX_MAPBOX_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  key: MAPX_MAPBOX_TOKEN
+                  name: mx-secret-{{ .Release.Name }}
+            - name: MAPX_MIRROR_RATE_LIMIT
+              valueFrom:
+                configMapKeyRef:
+                  key: MAPX_MIRROR_RATE_LIMIT
+                  name: mx-env-{{ .Release.Name }}
+            - name: MAPX_MIRROR_RATE_WINDOW_MINUTES
+              valueFrom:
+                configMapKeyRef:
+                  key: MAPX_MIRROR_RATE_WINDOW_MINUTES
+                  name: mx-env-{{ .Release.Name }}
+            - name: MAPX_MODE
+              valueFrom:
+                configMapKeyRef:
+                  key: MAPX_MODE
+                  name: mx-env-{{ .Release.Name }}
+            - name: MAPX_PATH_DOWNLOAD
+              valueFrom:
+                configMapKeyRef:
+                  key: MAPX_PATH_DOWNLOAD
+                  name: mx-env-{{ .Release.Name }}
+            - name: MAPX_PATH_DOWNLOAD_URL
+              valueFrom:
+                configMapKeyRef:
+                  key: MAPX_PATH_DOWNLOAD_URL
+                  name: mx-env-{{ .Release.Name }}
+            - name: MAPX_PATH_USERDATA
+              valueFrom:
+                configMapKeyRef:
+                  key: MAPX_PATH_USERDATA
+                  name: mx-env-{{ .Release.Name }}
+            - name: MAPX_PATH_USERDATA_URL
+              valueFrom:
+                configMapKeyRef:
+                  key: MAPX_PATH_USERDATA_URL
+                  name: mx-env-{{ .Release.Name }}
+            - name: MAPX_PROJECT_CREATORS
+              valueFrom:
+                configMapKeyRef:
+                  key: MAPX_PROJECT_CREATORS
+                  name: mx-env-{{ .Release.Name }}
+            - name: MAPX_PROJECT_DEFAULT
+              valueFrom:
+                configMapKeyRef:
+                  key: MAPX_PROJECT_DEFAULT
+                  name: mx-env-{{ .Release.Name }}
+            - name: MAPX_ROOT_MODE_MEMBERS
+              valueFrom:
+                configMapKeyRef:
+                  key: MAPX_ROOT_MODE_MEMBERS
+                  name: mx-env-{{ .Release.Name }}
+            - name: MAXMIND_URL_DOWNLOAD
+              valueFrom:
+                secretKeyRef:
+                  key: MAXMIND_URL_DOWNLOAD
+                  name: mx-secret-{{ .Release.Name }}
+            - name: MEILI_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: MEILI_HOST
+                  name: mx-env-{{ .Release.Name }}
+            - name: MEILI_HOST_PUBLIC
+              valueFrom:
+                configMapKeyRef:
+                  key: MEILI_HOST_PUBLIC
+                  name: mx-env-{{ .Release.Name }}
+            - name: MEILI_MASTER_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: MEILI_MASTER_KEY
+                  name: mx-secret-{{ .Release.Name }}
+            - name: MEILI_NO_ANALYTICS
+              valueFrom:
+                configMapKeyRef:
+                  key: MEILI_NO_ANALYTICS
+                  name: mx-env-{{ .Release.Name }}
+            - name: MEILI_NO_SENTRY
+              valueFrom:
+                configMapKeyRef:
+                  key: MEILI_NO_SENTRY
+                  name: mx-env-{{ .Release.Name }}
+            - name: MEILI_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: MEILI_PORT
+                  name: mx-env-{{ .Release.Name }}
+            - name: MEILI_PORT_PUBLIC
+              valueFrom:
+                configMapKeyRef:
+                  key: MEILI_PORT_PUBLIC
+                  name: mx-env-{{ .Release.Name }}
+            - name: MEILI_PROTOCOL_PUBLIC
+              valueFrom:
+                configMapKeyRef:
+                  key: MEILI_PROTOCOL_PUBLIC
+                  name: mx-env-{{ .Release.Name }}
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_DB
+                  name: mx-env-{{ .Release.Name }}
+            - name: POSTGRES_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_HOST
+                  name: mx-env-{{ .Release.Name }}
+            - name: POSTGRES_KEY_ENCRYPT
+              valueFrom:
+                secretKeyRef:
+                  key: POSTGRES_KEY_ENCRYPT
+                  name: mx-secret-{{ .Release.Name }}
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: POSTGRES_PASSWORD
+                  name: mx-secret-{{ .Release.Name }}
+            - name: POSTGRES_POOL_MAX
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_POOL_MAX
+                  name: mx-env-{{ .Release.Name }}
+            - name: POSTGRES_POOL_MIN
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_POOL_MIN
+                  name: mx-env-{{ .Release.Name }}
+            - name: POSTGRES_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_PORT
+                  name: mx-env-{{ .Release.Name }}
+            - name: POSTGRES_SCHEMA_MAIN
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_SCHEMA_MAIN
+                  name: mx-env-{{ .Release.Name }}
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_USER
+                  name: mx-env-{{ .Release.Name }}
+            - name: POSTGRES_USER_CUSTOM
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_USER_CUSTOM
+                  name: mx-env-{{ .Release.Name }}
+            - name: POSTGRES_USER_CUSTOM_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: POSTGRES_USER_CUSTOM_PASSWORD
+                  name: mx-secret-{{ .Release.Name }}
+            - name: POSTGRES_USER_READ
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_USER_READ
+                  name: mx-env-{{ .Release.Name }}
+            - name: POSTGRES_USER_READ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: POSTGRES_USER_READ_PASSWORD
+                  name: mx-secret-{{ .Release.Name }}
+            - name: POSTGRES_USER_WRITE
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_USER_WRITE
+                  name: mx-env-{{ .Release.Name }}
+            - name: POSTGRES_USER_WRITE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: POSTGRES_USER_WRITE_PASSWORD
+                  name: mx-secret-{{ .Release.Name }}
+            - name: REDIS_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: REDIS_HOST
+                  name: mx-env-{{ .Release.Name }}
+            - name: REDIS_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: REDIS_PORT
+                  name: mx-env-{{ .Release.Name }}
+          ports:
+            - containerPort: 3030
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "1Gi"
+              cpu: "1000m"
+          volumeMounts:
+            - name: mx-shared-{{ .Release.Name }}
+              mountPath: /shared
+      volumes:
+        - name: mx-shared-{{ .Release.Name }}
+          persistentVolumeClaim:
+            claimName: mx-shared-{{ .Release.Name }}

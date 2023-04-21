@@ -1,0 +1,56 @@
+entryPoint: web
+protocol: "http://"
+endPoint: mapx.local
+storageClassName: secret
+
+apiReplicas: 2
+apiImage: fredmoser/mapx_api
+apiTag: 1.11.0-alpha.3
+
+appReplicas: 2
+appImage: fredmoser/mapx_app
+appTag: 1.11.0-alpha.3
+
+geoserverImage: fredmoser/geoserver
+geoserverTag: 2.22.2
+geoserverAdminPassword: secret
+geoserverContactCity: secret
+geoserverContactCountry: secret
+geoserverContactEmail: secret
+geoserverContactOrganisation: secret
+geoserverContactPerson: secret
+
+redisImage: redis
+redisTag: 7.0.2-alpine3.16
+redisMaxMemoryGb: 4
+
+meiliImage: fredmoser/meili
+meiliTag: 0.20.0-alpine
+meiliMasterKey: secret
+
+mailBot: secret
+mailFrom: secret
+mailGuest: secret
+mailHost: secret
+mailPort: secret
+mailUser: secret
+mailAdmin: secret
+mailPassword: secret
+
+mapxMode: "[]"
+mapxProjectDefault: "MX-3ZK-82N-DY8-WU2-IGF"
+mapxMapboxToken: secret
+mapxDevMembers: "[1]"
+mapxProjectCreators: "[1]"
+mapxRootModeMembers: "[1]"
+
+postgresHost: db.staging.mapx.org
+postgresDb: mapx
+postgresPort: "5432"
+postgresKeyEncrypt: secret
+postgresPassword: secret
+postgresUserCustomPassword: secret
+postgresUserReadPassword: secret
+postgresUserWritePassword: secret
+
+maxmindUrlDownload: secret

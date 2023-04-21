@@ -1,0 +1,97 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mx-search-{{ .Release.Name }}
+  labels:
+    app: search
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: search
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      name: mx-search-{{ .Release.Name }}
+      labels:
+        app: search
+        network/net-backend: "true"
+        network/net-frontend: "true"
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - aunepuks110
+                - aunepuks111
+      restartPolicy: Always
+      securityContext:
+        runAsUser: 89129
+        runAsGroup: 101
+        fsGroup: 101
+        fsGroupChangePolicy: "OnRootMismatch"
+      containers:
+        - name: mx-search-{{ .Release.Name }}
+          image: {{ .Values.meiliImage | default "fredmoser/meili" }}:{{ .Values.meiliTag | default "0.20.0-alpine" }}
+          env:
+            - name: MEILI_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: MEILI_HOST
+                  name: mx-env-{{ .Release.Name }}
+            - name: MEILI_HOST_PUBLIC
+              valueFrom:
+                configMapKeyRef:
+                  key: MEILI_HOST_PUBLIC
+                  name: mx-env-{{ .Release.Name }}
+            - name: MEILI_MASTER_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: MEILI_MASTER_KEY
+                  name: mx-secret-{{ .Release.Name }}
+            - name: MEILI_NO_ANALYTICS
+              valueFrom:
+                configMapKeyRef:
+                  key: MEILI_NO_ANALYTICS
+                  name: mx-env-{{ .Release.Name }}
+            - name: MEILI_NO_SENTRY
+              valueFrom:
+                configMapKeyRef:
+                  key: MEILI_NO_SENTRY
+                  name: mx-env-{{ .Release.Name }}
+            - name: MEILI_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: MEILI_PORT
+                  name: mx-env-{{ .Release.Name }}
+            - name: MEILI_PORT_PUBLIC
+              valueFrom:
+                configMapKeyRef:
+                  key: MEILI_PORT_PUBLIC
+                  name: mx-env-{{ .Release.Name }}
+            - name: MEILI_PROTOCOL_PUBLIC
+              valueFrom:
+                configMapKeyRef:
+                  key: MEILI_PROTOCOL_PUBLIC
+                  name: mx-env-{{ .Release.Name }}
+          ports:
+            - containerPort: 7700
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "500m"
+            limits:
+              memory: "2Gi"
+              cpu: "1000m"
+          volumeMounts:
+            - name: mx-meili-{{ .Release.Name }}
+              mountPath: /data.ms
+      volumes:
+        - name: mx-meili-{{ .Release.Name }}
+          persistentVolumeClaim:
+            claimName: mx-meili-{{ .Release.Name }}

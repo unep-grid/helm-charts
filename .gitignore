@@ -1,0 +1,9 @@
+### Helm ###
+# Chart dependencies
+**/charts/*.tgz
+
+### Custom ###
+_old
+local-values.yaml
+uni-dev-values.yaml
+unep-uks100-aci.yaml

@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: mx-net-frontend-{{ .Release.Name }}
+  namespace: mapx-dev
+spec:
+  podSelector:
+    matchLabels:
+      network/net-frontend: "true"
+  policyTypes:
+  - Ingress
+  ingress:
+    - from:
+      - podSelector:
+          matchLabels:
+            network/net-frontend: "true"
+          matchExpressions:
+            - key: network/net-frontend
+              operator: In
+              values:
+                - "true"
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: traefik
+            matchExpressions:
+              - key: kubernetes.io/metadata.name
+                operator: In
+                values:
+                  - traefik
+          podSelector: {}

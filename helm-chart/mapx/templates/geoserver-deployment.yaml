@@ -1,0 +1,116 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mx-geoserver-{{ .Release.Name }}
+  labels:
+    app: geoserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: geoserver
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      name: mx-geoserver-{{ .Release.Name }}
+      labels:
+        network/net-frontend: "true"
+        app: geoserver
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - aunepuks110
+                - aunepuks111
+      restartPolicy: Always
+      securityContext:
+        runAsUser: 66712
+        runAsGroup: 101
+        fsGroup: 101
+        fsGroupChangePolicy: "OnRootMismatch"
+      containers:
+        - name: mx-geoserver-{{ .Release.Name }}
+          image: {{ .Values.geoserverImage | default "fredmoser/geoserver" }}:{{ .Values.geoserverTag }}
+          env:
+            - name: GEOSERVER_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: GEOSERVER_ADMIN_PASSWORD
+                  name: mx-secret-{{ .Release.Name }}
+            - name: GEOSERVER_ADMIN_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  key: GEOSERVER_ADMIN_USERNAME
+                  name: mx-env-{{ .Release.Name }}
+            - name: GEOSERVER_CONTACT_CITY
+              valueFrom:
+                configMapKeyRef:
+                  key: GEOSERVER_CONTACT_CITY
+                  name: mx-env-{{ .Release.Name }}
+            - name: GEOSERVER_CONTACT_COUNTRY
+              valueFrom:
+                configMapKeyRef:
+                  key: GEOSERVER_CONTACT_COUNTRY
+                  name: mx-env-{{ .Release.Name }}
+            - name: GEOSERVER_CONTACT_EMAIL
+              valueFrom:
+                configMapKeyRef:
+                  key: GEOSERVER_CONTACT_EMAIL
+                  name: mx-env-{{ .Release.Name }}
+            - name: GEOSERVER_CONTACT_ORGANISATION
+              valueFrom:
+                configMapKeyRef:
+                  key: GEOSERVER_CONTACT_ORGANISATION
+                  name: mx-env-{{ .Release.Name }}
+            - name: GEOSERVER_CONTACT_PERSON
+              valueFrom:
+                configMapKeyRef:
+                  key: GEOSERVER_CONTACT_PERSON
+                  name: mx-env-{{ .Release.Name }}
+            - name: GEOSERVER_CONTACT_PERSON_POSITION
+              valueFrom:
+                configMapKeyRef:
+                  key: GEOSERVER_CONTACT_PERSON_POSITION
+                  name: mx-env-{{ .Release.Name }}
+            - name: GEOSERVER_DATA_DIR
+              valueFrom:
+                configMapKeyRef:
+                  key: GEOSERVER_DATA_DIR
+                  name: mx-env-{{ .Release.Name }}
+            - name: GEOSERVER_HOME
+              valueFrom:
+                configMapKeyRef:
+                  key: GEOSERVER_HOME
+                  name: mx-env-{{ .Release.Name }}
+            - name: GEOSERVER_URL
+              valueFrom:
+                configMapKeyRef:
+                  key: GEOSERVER_URL
+                  name: mx-env-{{ .Release.Name }}
+            - name: GEOSERVER_URL_PUBLIC
+              valueFrom:
+                configMapKeyRef:
+                  key: GEOSERVER_URL_PUBLIC
+                  name: mx-env-{{ .Release.Name }}
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              memory: "4Gi"
+              cpu: "250m"
+            limits:
+              memory: "4Gi"
+              cpu: "1000m"
+          volumeMounts:
+            - name: mx-geoserver-{{ .Release.Name }}
+              mountPath: /geoserver/db
+      volumes:
+        - name: mx-geoserver-{{ .Release.Name }}
+          persistentVolumeClaim:
+            claimName: mx-geoserver-{{ .Release.Name }}
