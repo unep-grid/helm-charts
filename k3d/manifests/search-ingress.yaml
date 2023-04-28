@@ -1,0 +1,17 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: search
+  labels:
+    app: search
+spec:
+  entryPoints:
+    - web
+  routes:
+  - kind: Rule
+    match: Host(`search.mapx.local`)
+    services:
+    - name: search
+      port: 7700
+    middlewares:
+      - name: search

@@ -9,7 +9,6 @@ Install:
 - [docker](https://docs.docker.com/get-docker/)
 - [k3d](https://k3d.io/)
 - [kubctl](https://kubernetes.io/docs/tasks/tools/#kubectl)
-- [helm](https://helm.sh/docs/intro/install/)
 
 Optional but useful tools:
 
@@ -19,11 +18,12 @@ Optional but useful tools:
 
 ### How to deloy MapX?
 
+Before deploying MapX locally, make sure you have access to a working MapX database outside of the cluster. The database connection information is to be defined in the environment variables (i.e., configMap and secrets).
+
 1. Create a local cluster:
 
    ```sh
    k3d cluster create --config k3d-config.yaml
-   kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.11.0/cert-manager.yaml
    ```
 
 2. Identify the IP address of the local cluster's load balancer:
@@ -48,10 +48,18 @@ Optional but useful tools:
    kubectl apply -f traefik-dashboard.yaml
    ```
 
-5. Fill `../helm-chart/mapx/values.yaml` with the values needed for MapX to work properly
+5. Fill `manifests/env-secret-default.yaml` with the values (in Base64) needed for MapX to work properly. Then:
+
+   ```sh
+   mv manifests/env-secret-default.yaml manifests/env-secret.yaml
+   ```
 
 6. Deploy MapX:
 
    ```sh
-   helm install dev ./helm-chart/mapx/ -f ./helm-chart/mapx/values.yaml
+   kubectl apply -f manifests/
    ```
+
+### Limitations
+
+- No websecure and certificate management

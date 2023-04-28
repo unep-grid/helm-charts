@@ -1,0 +1,289 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: app
+  name: app
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: app
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      restartPolicy: Always
+      securityContext:
+        runAsUser: 12345
+        runAsGroup: 101
+        fsGroup: 101
+        fsGroupChangePolicy: "OnRootMismatch"
+      containers:
+        - name: app
+          image: fredmoser/mapx_app:1.11.0-alpha.2
+          env:
+            - name: API_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: API_HOST
+                  name: mapx-env
+            - name: API_HOST_PUBLIC
+              valueFrom:
+                configMapKeyRef:
+                  key: API_HOST_PUBLIC
+                  name: mapx-env
+            - name: API_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: API_PORT
+                  name: mapx-env
+            - name: API_PORT_PUBLIC
+              valueFrom:
+                configMapKeyRef:
+                  key: API_PORT_PUBLIC
+                  name: mapx-env
+            - name: MAIL_ADMIN
+              valueFrom:
+                secretKeyRef:
+                  key: MAIL_ADMIN
+                  name: mapx-secret
+            - name: MAIL_BOT
+              valueFrom:
+                configMapKeyRef:
+                  key: MAIL_BOT
+                  name: mapx-env
+            - name: MAIL_FROM
+              valueFrom:
+                configMapKeyRef:
+                  key: MAIL_FROM
+                  name: mapx-env
+            - name: MAIL_GUEST
+              valueFrom:
+                configMapKeyRef:
+                  key: MAIL_GUEST
+                  name: mapx-env
+            - name: MAIL_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: MAIL_HOST
+                  name: mapx-env
+            - name: MAIL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: MAIL_PASSWORD
+                  name: mapx-secret
+            - name: MAIL_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: MAIL_PORT
+                  name: mapx-env
+            - name: MAIL_USER
+              valueFrom:
+                configMapKeyRef:
+                  key: MAIL_USER
+                  name: mapx-env
+            - name: MAPX_DB_LOG_LEVELS
+              valueFrom:
+                configMapKeyRef:
+                  key: MAPX_DB_LOG_LEVELS
+                  name: mapx-env
+            - name: MAPX_DEV_MEMBERS
+              valueFrom:
+                configMapKeyRef:
+                  key: MAPX_DEV_MEMBERS
+                  name: mapx-env
+            - name: MAPX_MAPBOX_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  key: MAPX_MAPBOX_TOKEN
+                  name: mapx-secret
+            - name: MAPX_MIRROR_RATE_LIMIT
+              valueFrom:
+                configMapKeyRef:
+                  key: MAPX_MIRROR_RATE_LIMIT
+                  name: mapx-env
+            - name: MAPX_MIRROR_RATE_WINDOW_MINUTES
+              valueFrom:
+                configMapKeyRef:
+                  key: MAPX_MIRROR_RATE_WINDOW_MINUTES
+                  name: mapx-env
+            - name: MAPX_MODE
+              valueFrom:
+                configMapKeyRef:
+                  key: MAPX_MODE
+                  name: mapx-env
+            - name: MAPX_PATH_DOWNLOAD
+              valueFrom:
+                configMapKeyRef:
+                  key: MAPX_PATH_DOWNLOAD
+                  name: mapx-env
+            - name: MAPX_PATH_DOWNLOAD_URL
+              valueFrom:
+                configMapKeyRef:
+                  key: MAPX_PATH_DOWNLOAD_URL
+                  name: mapx-env
+            - name: MAPX_PATH_USERDATA
+              valueFrom:
+                configMapKeyRef:
+                  key: MAPX_PATH_USERDATA
+                  name: mapx-env
+            - name: MAPX_PATH_USERDATA_URL
+              valueFrom:
+                configMapKeyRef:
+                  key: MAPX_PATH_USERDATA_URL
+                  name: mapx-env
+            - name: MAPX_PROJECT_CREATORS
+              valueFrom:
+                configMapKeyRef:
+                  key: MAPX_PROJECT_CREATORS
+                  name: mapx-env
+            - name: MAPX_PROJECT_DEFAULT
+              valueFrom:
+                configMapKeyRef:
+                  key: MAPX_PROJECT_DEFAULT
+                  name: mapx-env
+            - name: MAPX_ROOT_MODE_MEMBERS
+              valueFrom:
+                configMapKeyRef:
+                  key: MAPX_ROOT_MODE_MEMBERS
+                  name: mapx-env
+            - name: MEILI_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: MEILI_HOST
+                  name: mapx-env
+            - name: MEILI_HOST_PUBLIC
+              valueFrom:
+                configMapKeyRef:
+                  key: MEILI_HOST_PUBLIC
+                  name: mapx-env
+            - name: MEILI_MASTER_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: MEILI_MASTER_KEY
+                  name: mapx-secret
+            - name: MEILI_NO_ANALYTICS
+              valueFrom:
+                configMapKeyRef:
+                  key: MEILI_NO_ANALYTICS
+                  name: mapx-env
+            - name: MEILI_NO_SENTRY
+              valueFrom:
+                configMapKeyRef:
+                  key: MEILI_NO_SENTRY
+                  name: mapx-env
+            - name: MEILI_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: MEILI_PORT
+                  name: mapx-env
+            - name: MEILI_PORT_PUBLIC
+              valueFrom:
+                configMapKeyRef:
+                  key: MEILI_PORT_PUBLIC
+                  name: mapx-env
+            - name: MEILI_PROTOCOL_PUBLIC
+              valueFrom:
+                configMapKeyRef:
+                  key: MEILI_PROTOCOL_PUBLIC
+                  name: mapx-env
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_DB
+                  name: mapx-env
+            - name: POSTGRES_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_HOST
+                  name: mapx-env
+            - name: POSTGRES_KEY_ENCRYPT
+              valueFrom:
+                secretKeyRef:
+                  key: POSTGRES_KEY_ENCRYPT
+                  name: mapx-secret
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: POSTGRES_PASSWORD
+                  name: mapx-secret
+            - name: POSTGRES_POOL_MAX
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_POOL_MAX
+                  name: mapx-env
+            - name: POSTGRES_POOL_MIN
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_POOL_MIN
+                  name: mapx-env
+            - name: POSTGRES_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_PORT
+                  name: mapx-env
+            - name: POSTGRES_SCHEMA_MAIN
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_SCHEMA_MAIN
+                  name: mapx-env
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_USER
+                  name: mapx-env
+            - name: POSTGRES_USER_CUSTOM
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_USER_CUSTOM
+                  name: mapx-env
+            - name: POSTGRES_USER_CUSTOM_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: POSTGRES_USER_CUSTOM_PASSWORD
+                  name: mapx-secret
+            - name: POSTGRES_USER_READ
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_USER_READ
+                  name: mapx-env
+            - name: POSTGRES_USER_READ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: POSTGRES_USER_READ_PASSWORD
+                  name: mapx-secret
+            - name: POSTGRES_USER_WRITE
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_USER_WRITE
+                  name: mapx-env
+            - name: POSTGRES_USER_WRITE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: POSTGRES_USER_WRITE_PASSWORD
+                  name: mapx-secret
+            - name: SHINY_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: SHINY_PORT
+                  name: mapx-env
+          ports:
+            - containerPort: 3838
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "1Gi"
+              cpu: "1000m"
+          volumeMounts:
+            - name: mx-shared
+              mountPath: /shared
+      volumes:
+        - name: mx-shared
+          persistentVolumeClaim:
+            claimName: mx-shared

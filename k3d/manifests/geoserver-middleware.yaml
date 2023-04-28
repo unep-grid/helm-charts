@@ -1,9 +1,7 @@
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
-  name: mx-app-{{ .Release.Name }}
-  labels:
-    app: app
+  name: geoserver
 spec:
   headers:
     accessControlAllowMethods:
@@ -12,5 +10,3 @@ spec:
       - '*'
     accessControlMaxAge: 100
     addVaryHeader: true
-    customResponseHeaders:
-      cacheControl: 'no-cache'

@@ -1,9 +1,7 @@
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
-  name: mx-app-{{ .Release.Name }}
-  labels:
-    app: app
+  name: app
 spec:
   headers:
     accessControlAllowMethods:

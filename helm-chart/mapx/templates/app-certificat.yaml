@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: app.{{ .Values.endPoint }}
+  labels:
+    app: app
+  namespace: traefik
+spec:
+  secretName: app.{{ .Values.endPoint }}
+  issuerRef:
+    name: letsencrypt-{{ .Values.letsencryptServer }}
+    kind: ClusterIssuer
+  dnsNames:
+  - app.{{ .Values.endPoint }}

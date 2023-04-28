@@ -1,0 +1,17 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: geoserver
+  labels:
+    app: geoserver
+spec:
+  entryPoints:
+    - web
+  routes:
+  - kind: Rule
+    match: Host(`geoserver.mapx.local`)
+    services:
+    - name: geoserver
+      port: 9000
+    middlewares:
+      - name: geoserver

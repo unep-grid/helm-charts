@@ -22,5 +22,4 @@
 *.tmproj
 .vscode/
 # Custom file
-local-values.yaml
 uni-dev-values.yaml

@@ -1,9 +1,7 @@
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
-  name: mx-search-{{ .Release.Name }}
-  labels:
-    app: search
+  name: search
 spec:
   rateLimit:
     average: 1000

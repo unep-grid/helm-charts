@@ -1,13 +1,12 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: mx-geoserver-{{ .Release.Name }}
   labels:
     app: geoserver
+  name: geoserver
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: {{ .Values.storageClassName }}
   resources:
     requests:
       storage: 4Gi

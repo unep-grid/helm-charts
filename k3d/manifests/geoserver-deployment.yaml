@@ -1,0 +1,104 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: geoserver
+  name: geoserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: geoserver
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: geoserver
+    spec:
+      restartPolicy: Always
+      securityContext:
+        runAsUser: 66712
+        runAsGroup: 101
+        fsGroup: 101
+        fsGroupChangePolicy: "OnRootMismatch"
+      containers:
+        - name: geoserver
+          image: fredmoser/geoserver:2.22.2
+          env:
+            - name: GEOSERVER_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: GEOSERVER_ADMIN_PASSWORD
+                  name: mapx-secret
+            - name: GEOSERVER_ADMIN_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  key: GEOSERVER_ADMIN_USERNAME
+                  name: mapx-env
+            - name: GEOSERVER_CONTACT_CITY
+              valueFrom:
+                configMapKeyRef:
+                  key: GEOSERVER_CONTACT_CITY
+                  name: mapx-env
+            - name: GEOSERVER_CONTACT_COUNTRY
+              valueFrom:
+                configMapKeyRef:
+                  key: GEOSERVER_CONTACT_COUNTRY
+                  name: mapx-env
+            - name: GEOSERVER_CONTACT_EMAIL
+              valueFrom:
+                configMapKeyRef:
+                  key: GEOSERVER_CONTACT_EMAIL
+                  name: mapx-env
+            - name: GEOSERVER_CONTACT_ORGANISATION
+              valueFrom:
+                configMapKeyRef:
+                  key: GEOSERVER_CONTACT_ORGANISATION
+                  name: mapx-env
+            - name: GEOSERVER_CONTACT_PERSON
+              valueFrom:
+                configMapKeyRef:
+                  key: GEOSERVER_CONTACT_PERSON
+                  name: mapx-env
+            - name: GEOSERVER_CONTACT_PERSON_POSITION
+              valueFrom:
+                configMapKeyRef:
+                  key: GEOSERVER_CONTACT_PERSON_POSITION
+                  name: mapx-env
+            - name: GEOSERVER_DATA_DIR
+              valueFrom:
+                configMapKeyRef:
+                  key: GEOSERVER_DATA_DIR
+                  name: mapx-env
+            - name: GEOSERVER_HOME
+              valueFrom:
+                configMapKeyRef:
+                  key: GEOSERVER_HOME
+                  name: mapx-env
+            - name: GEOSERVER_URL
+              valueFrom:
+                configMapKeyRef:
+                  key: GEOSERVER_URL
+                  name: mapx-env
+            - name: GEOSERVER_URL_PUBLIC
+              valueFrom:
+                configMapKeyRef:
+                  key: GEOSERVER_URL_PUBLIC
+                  name: mapx-env
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              memory: "4Gi"
+              cpu: "250m"
+            limits:
+              memory: "4Gi"
+              cpu: "1000m"
+          volumeMounts:
+            - name: geoserver
+              mountPath: /geoserver/db
+      volumes:
+        - name: geoserver
+          persistentVolumeClaim:
+            claimName: geoserver

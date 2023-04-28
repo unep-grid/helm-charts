@@ -1,6 +1,8 @@
-entryPoint: web
-protocol: "http://"
-endPoint: mapx.local
+entryPoint: websecure
+protocol: "https://"
+endPoint: secret
+letsencryptServer: staging 
+
 storageClassName: secret
 
 apiReplicas: 2

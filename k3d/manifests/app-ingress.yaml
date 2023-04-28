@@ -1,0 +1,17 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: app
+  labels:
+    app: app
+spec:
+  entryPoints:
+    - web
+  routes:
+  - kind: Rule
+    match: Host(`app.mapx.local`)
+    services:
+    - name: app
+      port: 3838
+    middlewares:
+      - name: app

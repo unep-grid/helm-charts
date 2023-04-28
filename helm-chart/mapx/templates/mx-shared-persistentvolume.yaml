@@ -18,4 +18,3 @@ spec:
     server: nasac-evs2.unige.ch
     path: "/unep-grid-data/k8s/"
     readOnly: false
-    

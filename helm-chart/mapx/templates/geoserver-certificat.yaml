@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: geoserver.{{ .Values.endPoint }}
+  labels:
+    app: geoserver
+  namespace: traefik
+spec:
+  secretName: geoserver.{{ .Values.endPoint }}
+  issuerRef:
+    name: letsencrypt-{{ .Values.letsencryptServer }}
+    kind: ClusterIssuer
+  dnsNames:
+  - geoserver.{{ .Values.endPoint }}
