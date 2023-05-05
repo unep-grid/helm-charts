@@ -4,7 +4,6 @@ metadata:
   name: search.{{ .Values.endPoint }}
   labels:
     app: search
-  namespace: traefik
 spec:
   secretName: search.{{ .Values.endPoint }}
   issuerRef:

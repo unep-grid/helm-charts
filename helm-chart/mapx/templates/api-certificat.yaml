@@ -4,7 +4,6 @@ metadata:
   name: api.{{ .Values.endPoint }}
   labels:
     app: api
-  namespace: traefik
 spec:
   secretName: api.{{ .Values.endPoint }}
   issuerRef:

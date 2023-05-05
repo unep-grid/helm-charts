@@ -6,7 +6,7 @@ data:
   API_HOST: mx-api-{{ .Release.Name }}
   API_HOST_PUBLIC: api.{{ .Values.endPoint }}
   API_PORT: "3030"
-  API_PORT_PUBLIC: "80"
+  API_PORT_PUBLIC: {{ .Values.portPublic | quote }}
   GEOSERVER_ADMIN_USERNAME: admin
   GEOSERVER_CONTACT_CITY: {{ .Values.geoserverContactCity }}
   GEOSERVER_CONTACT_COUNTRY: {{ .Values.geoserverContactCountry }}
@@ -41,7 +41,7 @@ data:
   MEILI_NO_ANALYTICS: "true"
   MEILI_NO_SENTRY: "true"
   MEILI_PORT: "7700"
-  MEILI_PORT_PUBLIC: "80"
+  MEILI_PORT_PUBLIC: {{ .Values.portPublic | quote }}
   MEILI_PROTOCOL_PUBLIC: {{ .Values.protocol }}
   POSTGRES_DB: {{ .Values.postgresDb }}
   POSTGRES_HOST: {{ .Values.postgresHost }}

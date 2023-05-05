@@ -16,6 +16,4 @@ spec:
     middlewares:
       - name: mx-search-{{ .Release.Name }}
   tls:
-  - hosts:
-    - search.{{ .Values.endPoint }}
     secretName: search.{{ .Values.endPoint }}

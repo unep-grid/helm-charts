@@ -16,6 +16,4 @@ spec:
     middlewares:
       - name: mx-geoserver-{{ .Release.Name }}
   tls:
-  - hosts:
-    - geoserver.{{ .Values.endPoint }}
     secretName: geoserver.{{ .Values.endPoint }}
