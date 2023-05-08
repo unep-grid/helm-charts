@@ -2,7 +2,6 @@
 
 ## In progress
 
-- Switching to `Websecure` using `cert-manager`
 - External review of the Helm package by [SixSq](https://sixsq.com/) including:
   - Test and validate Network policies
   - Test and validate requests and limits
