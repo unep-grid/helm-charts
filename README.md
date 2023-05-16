@@ -13,7 +13,12 @@ Optional but useful tools:
 - [krew](https://krew.sigs.k8s.io/docs/user-guide/setup/install/)
 - [kompose](https://kompose.io/installation/)
 
-### How to deloy MapX?
+## Cluster requirements
+
+- [cert-manager](https://cert-manager.io/)
+- [Traefik k8s CRD](https://doc.traefik.io/traefik/reference/dynamic-configuration/kubernetes-crd/)
+
+## How to deloy MapX?
 
 ⚠ Following [Sokube](https://www.sokube.io/en/home) recommendations, MapX database is not deployed in the k8s cluster. Make sure a working MapX database is accessible from the cluster.
 

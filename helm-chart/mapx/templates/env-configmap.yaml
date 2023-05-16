@@ -21,7 +21,7 @@ data:
   MAIL_BOT: {{ .Values.mailBot }}
   MAIL_FROM: {{ .Values.mailFrom }}
   MAIL_GUEST: {{ .Values.mailGuest }}
-  MAIL_HOST: {{ .Values.mailHost }}
+  MAIL_HOST: {{ .Values.mailHost | quote }}
   MAIL_PORT: {{ .Values.mailPort | quote }}
   MAIL_USER: {{ .Values.mailUser }}
   MAPX_DB_LOG_LEVELS: '["ERROR","WARNING","MESSAGE","LOG","USER_ACTION"]'

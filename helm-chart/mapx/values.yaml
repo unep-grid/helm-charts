@@ -8,11 +8,11 @@ storageClassName: secret
 
 apiReplicas: 2
 apiImage: fredmoser/mapx_api
-apiTag: 1.11.0-alpha.3
+apiTag: 1.11.0
 
 appReplicas: 2
 appImage: fredmoser/mapx_app
-appTag: 1.11.0-alpha.3
+appTag: 1.11.0
 
 geoserverImage: fredmoser/geoserver
 geoserverTag: 2.22.2
