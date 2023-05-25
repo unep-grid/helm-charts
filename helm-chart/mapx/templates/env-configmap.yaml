@@ -16,7 +16,7 @@ data:
   GEOSERVER_CONTACT_PERSON_POSITION: Admin
   GEOSERVER_DATA_DIR: /geoserver/db
   GEOSERVER_HOME: /geoserver
-  GEOSERVER_URL: {{ .Values.protocol }}mx-geoserver-{{ .Release.Name }}:9000/geoserver/rest
+  GEOSERVER_URL: http://mx-geoserver-{{ .Release.Name }}:9000/geoserver/rest
   GEOSERVER_URL_PUBLIC: {{ .Values.protocol }}geoserver.{{ .Values.endPoint }}/geoserver
   MAIL_BOT: {{ .Values.mailBot }}
   MAIL_FROM: {{ .Values.mailFrom }}
