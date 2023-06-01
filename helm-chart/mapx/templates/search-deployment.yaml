@@ -27,8 +27,9 @@ spec:
               - key: kubernetes.io/hostname
                 operator: In
                 values:
-                - aunepuks110
-                - aunepuks111
+                {{- range $v := .Values.nodeAffinity }}
+                - {{ $v }}
+                {{- end }}
       restartPolicy: Always
       securityContext:
         runAsUser: 89129

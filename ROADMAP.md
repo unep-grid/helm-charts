@@ -7,7 +7,6 @@
 
 ## To Do
 
-- Add a variable for node affinity values
 - Use `envFrom` for better environment variables handling (shorter manifests)
 - Define update strategy (rolling update or not)
 - Develop liveness, readiness and startup probes

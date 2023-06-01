@@ -2,9 +2,14 @@ entryPoint: websecure
 protocol: "https://"
 endPoint: secret
 portPublic: "443"
-letsencryptServer: staging 
+letsencryptServer: staging
 
 storageClassName: secret
+
+# list of nodes where to deploy the pods
+# node selection is based on the kubernetes.io/hostname label
+nodeAffinity:
+  - secret
 
 apiReplicas: 2
 apiImage: fredmoser/mapx_api
