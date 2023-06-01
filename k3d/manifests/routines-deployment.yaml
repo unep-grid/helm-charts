@@ -21,7 +21,7 @@ spec:
         fsGroup: 101
         fsGroupChangePolicy: "OnRootMismatch"
       containers:
-        - image: fredmoser/mapx_api:1.11.0-alpha.2
+        - image: fredmoser/mapx_api:1.11.0
           name: routines
           args:
             - node

@@ -24,7 +24,7 @@ spec:
         fsGroupChangePolicy: "OnRootMismatch"
       containers:
         - name: app
-          image: fredmoser/mapx_app:1.11.0-alpha.2
+          image: fredmoser/mapx_app:1.11.0
           env:
             - name: API_HOST
               valueFrom:

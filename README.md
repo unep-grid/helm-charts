@@ -35,3 +35,7 @@ Optional but useful tools:
    ```sh
    helm install <namespace> helm-chart/mapx/ -f helm-chart/mapx/values.yaml
    ```
+
+## Additional information
+
+The Helm package has been reviewed by [SixSq](https://sixsq.com/) in May 2023.
