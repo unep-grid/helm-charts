@@ -33,7 +33,8 @@ Optional but useful tools:
 3. Deploy MapX:
 
    ```sh
-   helm install <namespace> helm-chart/mapx/ -f helm-chart/mapx/values.yaml
+   # helm install [NAME] [CHART] [flags]
+   helm install <name> helm-chart/mapx/ -f helm-chart/mapx/values.yaml
    ```
 
 ## Additional information
