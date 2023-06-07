@@ -4,7 +4,7 @@
 
 Install:
 
-- [kubctl](https://kubernetes.io/docs/tasks/tools/#kubectl)
+- [kubctl](https://kubernetes.io/docs/tasks/tools/#kubectl) ([cheat sheet](https://kubernetes.io/docs/reference/kubectl/cheatsheet/))
 - [helm](https://helm.sh/docs/intro/install/)
 
 Optional but useful tools:
