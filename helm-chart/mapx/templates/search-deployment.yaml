@@ -39,47 +39,15 @@ spec:
       containers:
         - name: mx-search-{{ .Release.Name }}
           image: {{ .Values.meiliImage | default "fredmoser/meili" }}:{{ .Values.meiliTag | default "0.20.0-alpine" }}
+          envFrom:
+          - configMapRef:
+              name: mx-env-{{ .Release.Name }}
           env:
-            - name: MEILI_HOST
-              valueFrom:
-                configMapKeyRef:
-                  key: MEILI_HOST
-                  name: mx-env-{{ .Release.Name }}
-            - name: MEILI_HOST_PUBLIC
-              valueFrom:
-                configMapKeyRef:
-                  key: MEILI_HOST_PUBLIC
-                  name: mx-env-{{ .Release.Name }}
             - name: MEILI_MASTER_KEY
               valueFrom:
                 secretKeyRef:
                   key: MEILI_MASTER_KEY
                   name: mx-secret-{{ .Release.Name }}
-            - name: MEILI_NO_ANALYTICS
-              valueFrom:
-                configMapKeyRef:
-                  key: MEILI_NO_ANALYTICS
-                  name: mx-env-{{ .Release.Name }}
-            - name: MEILI_NO_SENTRY
-              valueFrom:
-                configMapKeyRef:
-                  key: MEILI_NO_SENTRY
-                  name: mx-env-{{ .Release.Name }}
-            - name: MEILI_PORT
-              valueFrom:
-                configMapKeyRef:
-                  key: MEILI_PORT
-                  name: mx-env-{{ .Release.Name }}
-            - name: MEILI_PORT_PUBLIC
-              valueFrom:
-                configMapKeyRef:
-                  key: MEILI_PORT_PUBLIC
-                  name: mx-env-{{ .Release.Name }}
-            - name: MEILI_PROTOCOL_PUBLIC
-              valueFrom:
-                configMapKeyRef:
-                  key: MEILI_PROTOCOL_PUBLIC
-                  name: mx-env-{{ .Release.Name }}
           ports:
             - containerPort: 7700
           resources:

@@ -38,67 +38,15 @@ spec:
       containers:
         - name: mx-geoserver-{{ .Release.Name }}
           image: {{ .Values.geoserverImage | default "fredmoser/geoserver" }}:{{ .Values.geoserverTag }}
+          envFrom:
+          - configMapRef:
+              name: mx-env-{{ .Release.Name }}
           env:
             - name: GEOSERVER_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
                   key: GEOSERVER_ADMIN_PASSWORD
                   name: mx-secret-{{ .Release.Name }}
-            - name: GEOSERVER_ADMIN_USERNAME
-              valueFrom:
-                configMapKeyRef:
-                  key: GEOSERVER_ADMIN_USERNAME
-                  name: mx-env-{{ .Release.Name }}
-            - name: GEOSERVER_CONTACT_CITY
-              valueFrom:
-                configMapKeyRef:
-                  key: GEOSERVER_CONTACT_CITY
-                  name: mx-env-{{ .Release.Name }}
-            - name: GEOSERVER_CONTACT_COUNTRY
-              valueFrom:
-                configMapKeyRef:
-                  key: GEOSERVER_CONTACT_COUNTRY
-                  name: mx-env-{{ .Release.Name }}
-            - name: GEOSERVER_CONTACT_EMAIL
-              valueFrom:
-                configMapKeyRef:
-                  key: GEOSERVER_CONTACT_EMAIL
-                  name: mx-env-{{ .Release.Name }}
-            - name: GEOSERVER_CONTACT_ORGANISATION
-              valueFrom:
-                configMapKeyRef:
-                  key: GEOSERVER_CONTACT_ORGANISATION
-                  name: mx-env-{{ .Release.Name }}
-            - name: GEOSERVER_CONTACT_PERSON
-              valueFrom:
-                configMapKeyRef:
-                  key: GEOSERVER_CONTACT_PERSON
-                  name: mx-env-{{ .Release.Name }}
-            - name: GEOSERVER_CONTACT_PERSON_POSITION
-              valueFrom:
-                configMapKeyRef:
-                  key: GEOSERVER_CONTACT_PERSON_POSITION
-                  name: mx-env-{{ .Release.Name }}
-            - name: GEOSERVER_DATA_DIR
-              valueFrom:
-                configMapKeyRef:
-                  key: GEOSERVER_DATA_DIR
-                  name: mx-env-{{ .Release.Name }}
-            - name: GEOSERVER_HOME
-              valueFrom:
-                configMapKeyRef:
-                  key: GEOSERVER_HOME
-                  name: mx-env-{{ .Release.Name }}
-            - name: GEOSERVER_URL
-              valueFrom:
-                configMapKeyRef:
-                  key: GEOSERVER_URL
-                  name: mx-env-{{ .Release.Name }}
-            - name: GEOSERVER_URL_PUBLIC
-              valueFrom:
-                configMapKeyRef:
-                  key: GEOSERVER_URL_PUBLIC
-                  name: mx-env-{{ .Release.Name }}
           ports:
             - containerPort: 8080
           resources:
