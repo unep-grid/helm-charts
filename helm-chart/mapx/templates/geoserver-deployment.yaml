@@ -49,6 +49,22 @@ spec:
                   name: mx-secret-{{ .Release.Name }}
           ports:
             - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /geoserver/index.html
+              port: http
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /geoserver/index.html
+              port: http
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
           resources:
             requests:
               memory: "4Gi"
