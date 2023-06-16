@@ -38,6 +38,37 @@ spec:
             - /usr/local/etc/redis/redis.conf
           ports:
             - containerPort: 6379
+          startupProbe:
+            tcpSocket:
+              port: 6379
+              startupProbe:
+            initialDelaySeconds: 0
+            periodSeconds: 5
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 9
+          livenessProbe:
+            initialDelaySeconds: 20
+            periodSeconds: 5
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 5
+            exec:
+              command:
+                - sh
+                - -c
+                - /health/ping_liveness_local.sh 5
+          readinessProbe:
+            initialDelaySeconds: 20
+            periodSeconds: 5
+            timeoutSeconds: 1
+            successThreshold: 1
+            failureThreshold: 5
+            exec:
+              command:
+                - sh
+                - -c
+                - /health/ping_readiness_local.sh 1
           resources:
             requests:
               memory: "{{ .Values.redisMaxMemoryGb | int }}Gi"
@@ -49,6 +80,8 @@ spec:
             - name: mx-redis-config-{{ .Release.Name }}
               mountPath: /usr/local/etc/redis/redis.conf
               readOnly: true
+            - name: mx-redis-health-{{ .Release.Name }}
+              mountPath: /health
       volumes:
         - name: mx-redis-config-{{ .Release.Name }}
           configMap:
@@ -56,3 +89,7 @@ spec:
             items:
               - key: redis.conf
                 path: redis.conf
+        - name: mx-redis-health-{{ .Release.Name }}
+          configMap:
+            name: mx-redis-health-{{ .Release.Name }}
+            defaultMode: 0755

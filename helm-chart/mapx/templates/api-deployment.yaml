@@ -55,6 +55,30 @@ spec:
               name: mx-secret-{{ .Release.Name }}
           ports:
             - containerPort: 3030
+          startupProbe:
+            httpGet:
+              path: /get/ip
+              port: 3030
+            initialDelaySeconds: 1
+            periodSeconds: 1
+            successThreshold: 1
+            failureThreshold: 60
+          readinessProbe:
+            httpGet:
+              path: /get/ip
+              port: 3030
+            initialDelaySeconds: 0
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /get/ip
+              port: 3030
+            initialDelaySeconds: 0
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 6
           resources:
             requests:
               memory: "512Mi"

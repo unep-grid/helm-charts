@@ -53,27 +53,27 @@ spec:
           startupProbe:
             httpGet:
               path: /health
-              port: http
+              port: 7700
             initialDelaySeconds: 1
             periodSeconds: 1
             successThreshold: 1
             failureThreshold: 60
-          livenessProbe:
-            httpGet:
-              path: /health
-              port: http
-            initialDelaySeconds: 0
-            periodSeconds: 10
-            successThreshold: 1
-            failureThreshold: 3
           readinessProbe:
             httpGet:
               path: /health
-              port: http
+              port: 7700
             initialDelaySeconds: 0
             periodSeconds: 10
             successThreshold: 1
             failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 7700
+            initialDelaySeconds: 0
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 6
           resources:
             requests:
               memory: "1Gi"
