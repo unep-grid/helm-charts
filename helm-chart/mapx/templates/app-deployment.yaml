@@ -89,7 +89,8 @@ spec:
                   key: POSTGRES_USER_WRITE_PASSWORD
                   name: mx-secret-{{ .Release.Name }}
           ports:
-            - containerPort: 3838
+            - name: app
+              containerPort: 3838
           resources:
             requests:
               memory: "512Mi"

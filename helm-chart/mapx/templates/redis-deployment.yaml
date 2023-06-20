@@ -40,11 +40,11 @@ spec:
           - configMapRef:
               name: mx-env-{{ .Release.Name }}
           ports:
-            - containerPort: 6379
+            - name: redis
+              containerPort: 6379
           startupProbe:
             tcpSocket:
-              port: 6379
-              startupProbe:
+              port: redis
             initialDelaySeconds: 0
             periodSeconds: 5
             timeoutSeconds: 5
