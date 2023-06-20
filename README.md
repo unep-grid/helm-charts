@@ -37,6 +37,8 @@ Optional but useful tools:
    helm install <name> helm-chart/mapx/ -f helm-chart/mapx/values.yaml
    ```
 
+4. If a pre-populated instance of MapX is used, import the `userdata` folder into the dedicated volume (e.g. `NFS` for the UniGe instance).
+
 ## Additional information
 
 The Helm package has been reviewed by [SixSq](https://sixsq.com/) in May 2023.
