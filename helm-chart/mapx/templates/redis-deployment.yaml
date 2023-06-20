@@ -36,6 +36,9 @@ spec:
           args:
             - redis-server
             - /usr/local/etc/redis/redis.conf
+          envFrom:
+          - configMapRef:
+              name: mx-env-{{ .Release.Name }}
           ports:
             - containerPort: 6379
           startupProbe:
@@ -55,9 +58,9 @@ spec:
             failureThreshold: 5
             exec:
               command:
-                - sh
+                - /bin/sh
                 - -c
-                - /health/ping_liveness_local.sh 5
+                - /health/ping_liveness_local.sh 5 # same value as timeoutSeconds
           readinessProbe:
             initialDelaySeconds: 20
             periodSeconds: 5
@@ -66,9 +69,9 @@ spec:
             failureThreshold: 5
             exec:
               command:
-                - sh
+                - /bin/sh
                 - -c
-                - /health/ping_readiness_local.sh 1
+                - /health/ping_readiness_local.sh 1 # same value as timeoutSeconds
           resources:
             requests:
               memory: "{{ .Values.redisMaxMemoryGb | int }}Gi"

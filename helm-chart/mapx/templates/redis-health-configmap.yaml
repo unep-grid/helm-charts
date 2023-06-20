@@ -6,7 +6,7 @@ metadata:
     app: redis
 data:
   ping_readiness_local.sh: |-
-    #!/bin/bash
+    #!/bin/sh
     
     response=$(
       timeout -s 15 $1 \
@@ -24,7 +24,7 @@ data:
       exit 1
     fi
   ping_liveness_local.sh: |-
-    #!/bin/bash
+    #!/bin/sh
     
     response=$(
       timeout -s 15 $1 \

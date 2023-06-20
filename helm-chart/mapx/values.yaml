@@ -13,11 +13,11 @@ nodeAffinity:
 
 apiReplicas: 2
 apiImage: fredmoser/mapx_api
-apiTag: 1.11.0
+apiTag: 1.12.2
 
 appReplicas: 2
 appImage: fredmoser/mapx_app
-appTag: 1.11.0
+appTag: 1.12.2
 
 geoserverImage: fredmoser/geoserver
 geoserverTag: 2.22.2
