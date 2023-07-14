@@ -39,6 +39,7 @@ spec:
       containers:
         - name: mx-app-{{ .Release.Name }}
           image: {{ .Values.appImage | default "fredmoser/mapx_app" }}:{{ .Values.appTag }}
+          imagePullPolicy: Always
           envFrom:
           - configMapRef:
               name: mx-env-{{ .Release.Name }}
@@ -91,6 +92,36 @@ spec:
           ports:
             - name: app
               containerPort: 3838
+          startupProbe:
+            exec:
+              command:
+              - /bin/bash
+              - -c
+              - wget --quiet --tries=1 --spider http://localhost:3838/health
+            initialDelaySeconds: 1
+            periodSeconds: 1
+            successThreshold: 1
+            failureThreshold: 60
+          readinessProbe:
+            exec:
+              command:
+              - /bin/bash
+              - -c
+              - wget --quiet --tries=1 --spider http://localhost:3838/health
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          livenessProbe:
+            exec:
+              command:
+              - /bin/bash
+              - -c
+              - wget --quiet --tries=1 --spider http://localhost:3838/health
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 6
           resources:
             requests:
               memory: "512Mi"

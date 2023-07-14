@@ -29,6 +29,21 @@ spec:
                 {{- range $v := .Values.nodeAffinity }}
                 - {{ $v }}
                 {{- end }}
+      # Redis 7.0.2
+      # WARNING
+      # - The TCP backlog setting of 511 cannot be enforced because
+      # /proc/sys/net/core/somaxconn is set to the lower value of 128.
+      # - overcommit_memory is set to 0! Background save may fail under low memory condition.
+      # To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and
+      # then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+      #
+      # SOLUTION
+      # https://kubernetes.io/docs/tasks/administer-cluster/sysctl-cluster/
+      #
+      # securityContext:
+      #   sysctls:
+      #     - name: net.core.somaxconn
+      #       value: "1024"
       restartPolicy: Always
       containers:
         - name: mx-redis-{{ .Release.Name }}
@@ -50,28 +65,28 @@ spec:
             timeoutSeconds: 5
             successThreshold: 1
             failureThreshold: 9
-          livenessProbe:
-            initialDelaySeconds: 20
-            periodSeconds: 5
-            timeoutSeconds: 5
-            successThreshold: 1
-            failureThreshold: 5
-            exec:
-              command:
-                - /bin/sh
-                - -c
-                - /health/ping_liveness_local.sh 5 # same value as timeoutSeconds
           readinessProbe:
-            initialDelaySeconds: 20
-            periodSeconds: 5
-            timeoutSeconds: 1
-            successThreshold: 1
-            failureThreshold: 5
             exec:
               command:
                 - /bin/sh
                 - -c
                 - /health/ping_readiness_local.sh 1 # same value as timeoutSeconds
+            initialDelaySeconds: 20
+            periodSeconds: 5
+            timeoutSeconds: 1
+            successThreshold: 1
+            failureThreshold: 5
+          livenessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - /health/ping_liveness_local.sh 5 # same value as timeoutSeconds
+            initialDelaySeconds: 20
+            periodSeconds: 5
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 5
           resources:
             requests:
               memory: "{{ .Values.redisMaxMemoryGb | int }}Gi"

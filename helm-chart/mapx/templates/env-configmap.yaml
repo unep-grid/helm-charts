@@ -29,6 +29,7 @@ data:
   MAPX_MIRROR_RATE_LIMIT: "2000"
   MAPX_MIRROR_RATE_WINDOW_MINUTES: "15"
   MAPX_MODE: {{ .Values.mapxMode | default "[]" | quote }}
+  MAPX_PATH_APP: /app
   MAPX_PATH_DOWNLOAD: /shared/download
   MAPX_PATH_DOWNLOAD_URL: /download/
   MAPX_PATH_USERDATA: /shared/userdata

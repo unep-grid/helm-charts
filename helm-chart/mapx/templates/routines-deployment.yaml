@@ -38,6 +38,7 @@ spec:
       containers:
         - name: mx-routines-{{ .Release.Name }}
           image: {{ .Values.apiImage | default "fredmoser/mapx_api" }}:{{ .Values.apiTag }}
+          imagePullPolicy: Always
           args:
             - node
             - /api/routines.js
