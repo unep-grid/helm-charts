@@ -18,6 +18,8 @@ data:
   GEOSERVER_HOME: /geoserver
   GEOSERVER_URL: http://mx-geoserver-{{ .Release.Name }}:9000/geoserver/rest
   GEOSERVER_URL_PUBLIC: {{ .Values.protocol }}geoserver.{{ .Values.endPoint }}/geoserver
+  LANG: en_US.UTF-8
+  LC_ALL: en_US.UTF-8
   MAIL_BOT: {{ .Values.mailBot }}
   MAIL_FROM: {{ .Values.mailFrom }}
   MAIL_GUEST: {{ .Values.mailGuest }}
