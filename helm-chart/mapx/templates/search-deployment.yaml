@@ -38,7 +38,7 @@ spec:
         fsGroupChangePolicy: "OnRootMismatch"
       containers:
         - name: mx-search-{{ .Release.Name }}
-          image: {{ .Values.meiliImage | default "fredmoser/meili" }}:{{ .Values.meiliTag | default "0.20.0-alpine" }}
+          image: {{ .Values.search.image | default "fredmoser/meili" }}:{{ .Values.search.tag | default "0.20.0-alpine" }}
           envFrom:
           - configMapRef:
               name: mx-env-{{ .Release.Name }}
@@ -77,15 +77,15 @@ spec:
             failureThreshold: 6
           resources:
             requests:
-              memory: "1Gi"
-              cpu: "500m"
+              memory: {{ .Values.search.resources.requests.memory | default "1Gi" }}
+              cpu: {{ .Values.search.resources.requests.cpu | default "500m" }}
             limits:
-              memory: "2Gi"
-              cpu: "1000m"
+              memory: {{ .Values.search.resources.limits.memory | default "2Gi" }}
+              cpu: {{ .Values.search.resources.limits.cpu | default "1000m" }}
           volumeMounts:
-            - name: mx-meili-{{ .Release.Name }}
+            - name: mx-search-{{ .Release.Name }}
               mountPath: /data.ms
       volumes:
-        - name: mx-meili-{{ .Release.Name }}
+        - name: mx-search-{{ .Release.Name }}
           persistentVolumeClaim:
-            claimName: mx-meili-{{ .Release.Name }}
+            claimName: mx-search-{{ .Release.Name }}

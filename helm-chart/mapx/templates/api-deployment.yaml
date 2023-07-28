@@ -5,7 +5,7 @@ metadata:
   labels:
     app: api
 spec:
-  replicas: {{ .Values.apiReplicas | default 4 | int }}
+  replicas: {{ .Values.api.replicas | default 4 | int }}
   selector:
     matchLabels:
       app: api
@@ -50,7 +50,7 @@ spec:
               mountPath: /shared
       containers:
         - name: mx-api-{{ .Release.Name }}
-          image: {{ .Values.apiImage | default "fredmoser/mapx_api" }}:{{ .Values.apiTag }}
+          image: {{ .Values.api.image | default "fredmoser/mapx_api" }}:{{ .Values.api.tag }}
           imagePullPolicy: Always
           envFrom:
           - configMapRef:
@@ -102,11 +102,11 @@ spec:
             failureThreshold: 6
           resources:
             requests:
-              memory: "512Mi"
-              cpu: "250m"
+              memory: {{ .Values.api.resources.requests.memory | default "512Mi" }}
+              cpu: {{ .Values.api.resources.requests.cpu | default "250m" }}
             limits:
-              memory: "1Gi"
-              cpu: "1000m"
+              memory: {{ .Values.api.resources.limits.memory | default "1Gi" }}
+              cpu: {{ .Values.api.resources.limits.cpu | default "1000m" }}
           volumeMounts:
             - name: mx-shared-{{ .Release.Name }}
               mountPath: /shared

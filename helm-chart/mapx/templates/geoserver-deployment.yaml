@@ -37,7 +37,7 @@ spec:
         fsGroupChangePolicy: "OnRootMismatch"
       containers:
         - name: mx-geoserver-{{ .Release.Name }}
-          image: {{ .Values.geoserverImage | default "fredmoser/geoserver" }}:{{ .Values.geoserverTag }}
+          image: {{ .Values.geoserver.image | default "fredmoser/geoserver" }}:{{ .Values.geoserver.tag }}
           envFrom:
           - configMapRef:
               name: mx-env-{{ .Release.Name }}
@@ -76,11 +76,11 @@ spec:
             failureThreshold: 6
           resources:
             requests:
-              memory: "4Gi"
-              cpu: "250m"
+              memory: {{ .Values.geoserver.resources.requests.memory | default "4Gi" }}
+              cpu: {{ .Values.geoserver.resources.requests.cpu | default "250m" }}
             limits:
-              memory: "4Gi"
-              cpu: "1000m"
+              memory: {{ .Values.geoserver.resources.limits.memory | default "4Gi" }}
+              cpu: {{ .Values.geoserver.resources.limits.cpu | default "1000m" }}
           volumeMounts:
             - name: mx-geoserver-{{ .Release.Name }}
               mountPath: /geoserver/db

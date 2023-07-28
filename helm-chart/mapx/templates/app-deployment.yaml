@@ -5,7 +5,7 @@ metadata:
   labels:
     app: app
 spec:
-  replicas: {{ .Values.appReplicas | default 4 | int }}
+  replicas: {{ .Values.app.replicas | default 4 | int }}
   selector:
     matchLabels:
       app: app
@@ -38,7 +38,7 @@ spec:
         fsGroupChangePolicy: "OnRootMismatch"
       containers:
         - name: mx-app-{{ .Release.Name }}
-          image: {{ .Values.appImage | default "fredmoser/mapx_app" }}:{{ .Values.appTag }}
+          image: {{ .Values.app.image | default "fredmoser/mapx_app" }}:{{ .Values.app.tag }}
           imagePullPolicy: Always
           envFrom:
           - configMapRef:
@@ -124,11 +124,11 @@ spec:
             failureThreshold: 6
           resources:
             requests:
-              memory: "512Mi"
-              cpu: "250m"
+              memory: {{ .Values.app.resources.requests.memory | default "512Mi" }}
+              cpu: {{ .Values.app.resources.requests.cpu | default "250m" }}
             limits:
-              memory: "1Gi"
-              cpu: "1000m"
+              memory: {{ .Values.app.resources.limits.memory | default "1Gi" }}
+              cpu: {{ .Values.app.resources.limits.cpu | default "1000m" }}
           volumeMounts:
             - name: mx-shared-{{ .Release.Name }}
               mountPath: /shared

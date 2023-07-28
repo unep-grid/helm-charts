@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: mx-meili-{{ .Release.Name }}
+  name: mx-search-{{ .Release.Name }}
   labels:
     app: search
 spec:

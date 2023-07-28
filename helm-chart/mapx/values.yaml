@@ -11,54 +11,104 @@ storageClassName: secret
 nodeAffinity:
   - secret
 
-apiReplicas: 2
-apiImage: fredmoser/mapx_api
-apiTag: 1.12.2
+api:
+  replicas: 2
+  image: fredmoser/mapx_api
+  tag: 1.12.3
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "250m"
+    limits:
+      memory: "1Gi"
+      cpu: "1000m"
 
-appReplicas: 2
-appImage: fredmoser/mapx_app
-appTag: 1.12.2
+app:
+  replicas: 2
+  image: fredmoser/mapx_app
+  tag: 1.12.3
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "250m"
+    limits:
+      memory: "1Gi"
+      cpu: "1000m"
 
-geoserverImage: fredmoser/geoserver
-geoserverTag: 2.22.2
-geoserverAdminPassword: secret
-geoserverContactCity: secret
-geoserverContactCountry: secret
-geoserverContactEmail: secret
-geoserverContactOrganisation: secret
-geoserverContactPerson: secret
+routines:
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "500m"
+    limits:
+      memory: "512Mi"
+      cpu: "2000m"
 
-redisImage: redis
-redisTag: 7.0.2-alpine3.16
-redisMaxMemoryGb: 4
+geoserver:
+  image: fredmoser/geoserver
+  tag: 2.22.2
+  adminPassword: secret
+  contact:
+    city: secret
+    country: secret
+    email: secret
+    organisation: secret
+    person: secret
+  resources:
+    requests:
+      memory: "4Gi"
+      cpu: "250m"
+    limits:
+      memory: "4Gi"
+      cpu: "1000m"
 
-meiliImage: fredmoser/meili
-meiliTag: 0.20.0-alpine
-meiliMasterKey: secret
+redis:
+  image: redis
+  tag: 7.0.2-alpine3.16
+  resources:
+    memory: "4Gi"
+    cpu: "1000m"
 
-mailBot: secret
-mailFrom: secret
-mailGuest: secret
-mailHost: secret
-mailPort: secret
-mailUser: secret
-mailAdmin: secret
-mailPassword: secret
+search:
+  image: fredmoser/meili
+  tag: 0.20.0-alpine
+  masterKey: secret
+  resources:
+    requests:
+      memory: "1Gi"
+      cpu: "500m"
+    limits:
+      memory: "2Gi"
+      cpu: "1000m"
 
-mapxMode: "[]"
-mapxProjectDefault: "MX-3ZK-82N-DY8-WU2-IGF"
-mapxMapboxToken: secret
-mapxDevMembers: "[1]"
-mapxProjectCreators: "[1]"
-mapxRootModeMembers: "[1]"
+postgres:
+  host: db.staging.mapx.org
+  db: mapx
+  port: "5432"
+  keyEncrypt: secret
+  password:
+    master: secret
+    userCustom: secret
+    userRead: secret
+    userWrite: secret
 
-postgresHost: db.staging.mapx.org
-postgresDb: mapx
-postgresPort: "5432"
-postgresKeyEncrypt: secret
-postgresPassword: secret
-postgresUserCustomPassword: secret
-postgresUserReadPassword: secret
-postgresUserWritePassword: secret
+smtp:
+  bot: secret
+  from: secret
+  guest: secret
+  host: secret
+  port: secret
+  user: secret
+  admin: secret
+  password: secret
 
-maxmindUrlDownload: secret
+mapx:
+  mode: "[]"
+  projectDefault: "MX-3ZK-82N-DY8-WU2-IGF"
+  devMembers: "[1]"
+  projectCreators: "[1]"
+  rootModeMembers: "[1]"
+  mapboxToken: secret
+  maxmindUrlDownload: secret
+
+grafanaSecretPassword: secret

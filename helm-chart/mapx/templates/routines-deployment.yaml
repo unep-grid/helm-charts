@@ -37,7 +37,7 @@ spec:
         fsGroupChangePolicy: "OnRootMismatch"
       containers:
         - name: mx-routines-{{ .Release.Name }}
-          image: {{ .Values.apiImage | default "fredmoser/mapx_api" }}:{{ .Values.apiTag }}
+          image: {{ .Values.api.image | default "fredmoser/mapx_api" }}:{{ .Values.api.tag }}
           imagePullPolicy: Always
           args:
             - node
@@ -49,8 +49,8 @@ spec:
               name: mx-secret-{{ .Release.Name }}
           resources:
             requests:
-              memory: "256Mi"
-              cpu: "500m"
+              memory: {{ .Values.routines.resources.requests.memory | default "256Mi" }}
+              cpu: {{ .Values.routines.resources.requests.cpu | default "500m" }}
             limits:
-              memory: "512Mi"
-              cpu: "2000m"
+              memory: {{ .Values.routines.resources.limits.memory | default "512Mi" }}
+              cpu: {{ .Values.routines.resources.limits.cpu | default "2000m" }}
