@@ -1,0 +1,67 @@
+defaultRules:
+  create: false
+
+alertmanager:
+  enabled: false
+
+prometheus:
+  prometheusSpec:
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: "{{ .Values.storageClassName }}"
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 10Gi
+
+grafana:
+  persistence:
+    enabled: true
+    size: 5Gi
+  adminPassword: "{{ .Values.grafanaSecretPassword }}"
+  sidecar:
+    datasources:
+      alertmanager:
+        enabled: false
+  grafana.ini:
+    smtp:
+      enabled: true
+      from_address: "{{ .Values.smtp.from }}"
+      from_name: "{{ .Values.smtp.from }}"
+      host: "{{ .Values.smtp.host }}:{{ .Values.smtp.port }}"
+      user: "{{ .Values.smtp.user }}"
+      password: "{{ .Values.smtp.password }}"
+
+extraManifests:
+  - apiVersion: cert-manager.io/v1
+    kind: Certificate
+    metadata:
+      name: grafana.{{ .Values.endPoint }}
+      labels:
+        app: grafana
+    spec:
+      secretName: grafana.{{ .Values.endPoint }}
+      issuerRef:
+        name: letsencrypt-{{ .Values.letsencryptServer }}
+        kind: ClusterIssuer
+      dnsNames:
+        - grafana.{{ .Values.endPoint }}
+  - apiVersion: traefik.io/v1alpha1
+    kind: IngressRoute
+    metadata:
+      name: grafana
+      namespace: prometheus-stack
+      labels:
+        app: grafana
+    spec:
+      entryPoints:
+        - "{{ .Values.entryPoint }}"
+      routes:
+        - kind: Rule
+          match: Host(`grafana.{{ .Values.endPoint }}`)
+          services:
+            - name: grafana
+              port: 80
+      tls:
+        secretName: grafana.{{ .Values.endPoint }}
