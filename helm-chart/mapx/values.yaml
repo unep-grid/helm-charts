@@ -2,7 +2,7 @@ entryPoint: websecure
 protocol: "https://"
 endPoint: secret
 portPublic: "443"
-letsencryptServer: staging
+clusterIssuer: letsencrypt-staging
 
 storageClassName: secret
 

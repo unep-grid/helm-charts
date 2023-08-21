@@ -54,3 +54,10 @@ spec:
             limits:
               memory: {{ .Values.routines.resources.limits.memory | default "512Mi" }}
               cpu: {{ .Values.routines.resources.limits.cpu | default "2000m" }}
+          volumeMounts:
+            - name: mx-shared-{{ .Release.Name }}
+              mountPath: /shared
+      volumes:
+        - name: mx-shared-{{ .Release.Name }}
+          persistentVolumeClaim:
+            claimName: mx-shared-{{ .Release.Name }}
