@@ -1,9 +1,0 @@
-apiVersion: traefik.io/v1alpha1
-kind: Middleware
-metadata:
-  name: search
-spec:
-  rateLimit:
-    average: 1000
-    burst: 500
-    period: 1m
