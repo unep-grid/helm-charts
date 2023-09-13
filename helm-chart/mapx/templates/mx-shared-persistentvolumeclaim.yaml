@@ -6,7 +6,7 @@ spec:
   storageClassName: ""
   volumeName: mx-shared-{{ .Release.Name }}
   accessModes:
-    -  ReadWriteMany
+    - ReadWriteMany
   volumeMode: Filesystem
   resources:
     requests:

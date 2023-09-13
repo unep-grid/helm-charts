@@ -93,7 +93,7 @@ export TRAEFIK_EXTERNAL_IP=$(kubectl get services \
 
 ```sh
 helm install \
-  -f ./utilities/kube_prometheus_stack/overrides.yml \
+  -f ./utilities/kube_prometheus_stack/overrides.yaml \
   -f ./helm-chart/mapx/values.yaml \
   prometheus-stack  prometheus-community/kube-prometheus-stack \
   --namespace prometheus-stack \
