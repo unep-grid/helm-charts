@@ -5,4 +5,3 @@
 ### Custom ###
 uni-dev-values.yaml
 unep-uks100-aci.yaml
-k3d/manifests/env-secret.yaml
