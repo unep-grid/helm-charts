@@ -43,7 +43,7 @@ extraManifests:
     spec:
       secretName: grafana.{{ .Values.endPoint }}
       issuerRef:
-        name: letsencrypt-{{ .Values.letsencryptServer }}
+        name: "{{ .Values.clusterIssuer }}"
         kind: ClusterIssuer
       dnsNames:
         - grafana.{{ .Values.endPoint }}

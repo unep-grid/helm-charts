@@ -42,12 +42,12 @@ helm install \
   cert-manager jetstack/cert-manager \
   --namespace cert-manager \
   --create-namespace \
-  --version v1.12.3 \
+  --version v1.13.0 \
   --set installCRDs=true \
   --wait
 ```
 
-In order to begin issuing certificates, an `Issuer`/`ClusterIssuer` resource needs to be set up.
+To begin issuing certificates, an `Issuer`/`ClusterIssuer` resource needs to be set up.
 ClusterIssuers for Let's Encrypt (staging and production) are available in `./utilities/cert_manager/`.
 Both of these ClusterIssuers are configured to use the [HTTP01](https://cert-manager.io/docs/configuration/acme/http01/) challenge provider.
 `spec.acme.email` must be filled before deploying these manifests in the cluster. The email is required by Let's Encrypt and used for certificate expiration and update notifications.
@@ -74,13 +74,22 @@ helm install \
   traefik traefik/traefik \
   --namespace traefik \
   --create-namespace \
-  --version 23.2.0 \
+  --version 24.0.0 \
   --wait
+```
+
+External Traefik IP to configure in DNS:
+
+```sh
+export TRAEFIK_EXTERNAL_IP=$(kubectl get services \
+    traefik \
+    --namespace traefik \
+    --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
 ```
 
 #### Kube-prometheus-stack
 
-Please configure `./utilities/kube_prometheus_stack/prometheus-stack-overrides.yml` as you wished. This will deploy a fully working persisted Prometheus and Grafana service. Generate certificate and make it reachable through a Traefik ingress. SMTP configuration should be passed also for now I'm reusing MapX Docker SMTP account. Grafana dashboards are loaded from the chart itself with a lot of usefull dashboards for Kubernetes. We can create/customize them as we do for MapX in prod.
+`./utilities/kube_prometheus_stack/prometheus-stack-overrides.yml` can be tweaked to personalize the deployment of the Prometheus stack.
 
 ```sh
 helm install \
@@ -89,7 +98,7 @@ helm install \
   prometheus-stack  prometheus-community/kube-prometheus-stack \
   --namespace prometheus-stack \
   --create-namespace \
-  --version 48.2.2 
+  --version 51.0.2 
 ```
 
 ### MapX
