@@ -111,4 +111,13 @@ mapx:
   mapboxToken: secret
   maxmindUrlDownload: secret
 
-grafanaSecretPassword: secret
+grafana:
+  adminPassword: secret
+  grafana.ini:
+    smtp:
+      enabled: true
+      from_address: secret
+      from_name: secret
+      host: secret
+      user: secret
+      password: secret

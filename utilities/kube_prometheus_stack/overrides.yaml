@@ -19,19 +19,10 @@ grafana:
   persistence:
     enabled: true
     size: 5Gi
-  adminPassword: "{{ .Values.grafanaSecretPassword }}"
   sidecar:
     datasources:
       alertmanager:
         enabled: false
-  grafana.ini:
-    smtp:
-      enabled: true
-      from_address: "{{ .Values.smtp.from }}"
-      from_name: "{{ .Values.smtp.from }}"
-      host: "{{ .Values.smtp.host }}:{{ .Values.smtp.port }}"
-      user: "{{ .Values.smtp.user }}"
-      password: "{{ .Values.smtp.password }}"
 
 extraManifests:
   - apiVersion: cert-manager.io/v1
@@ -61,7 +52,7 @@ extraManifests:
         - kind: Rule
           match: Host(`grafana.{{ .Values.endPoint }}`)
           services:
-            - name: grafana
+            - name: prometheus-stack-grafana
               port: 80
       tls:
         secretName: grafana.{{ .Values.endPoint }}
