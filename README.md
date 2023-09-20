@@ -1,5 +1,9 @@
 # MapX meets k8s
 
+Set of instructions to deploy [MapX](https://github.com/unep-grid/mapx) in a Kubernetes cluster.
+
+⚠ Please note that the versions used in this document may not be the latest by the time you read it. If `--version` is not specified, the latest version is used automatically.
+
 ## Prerequisites
 
 Install:
@@ -30,6 +34,7 @@ helm repo add longhorn https://charts.longhorn.io
 helm repo add traefik https://traefik.github.io/charts
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo add grafana https://grafana.github.io/helm-charts
+helm repo add git.unepgrid.ch https://git.unepgrid.ch/api/packages/mapx/helm
 helm repo update
 ```
 
@@ -58,6 +63,9 @@ kubctl apply -f ./utilities/cert_manager/
 
 #### Longhorn
 
+[Longhorn](https://github.com/longhorn/longhorn) is the CSI driver recommended by [SixSq](https://sixsq.com/) to deploy MapX in a Kubernetes cluster.
+Useful reading about the operation and deployment of Longhorn: <https://www.exoscale.com/syslog/longhorn-sks/>
+
 ```sh
 helm install \
   longhorn longhorn/longhorn \
@@ -66,6 +74,8 @@ helm install \
   --version 1.5.1 \
   --wait
 ```
+
+List of other CSI drivers that could be used to manage storage: <https://kubernetes-csi.github.io/docs/drivers.html>
 
 #### Traefik
 
@@ -98,16 +108,31 @@ helm install \
   prometheus-stack  prometheus-community/kube-prometheus-stack \
   --namespace prometheus-stack \
   --create-namespace \
-  --version 51.0.2 
+  --version 51.0.3 \
+  --wait
 ```
+
+The installation of this set of Grafana dashboards is recommended: <https://github.com/dotdc/grafana-dashboards-kubernetes/>
 
 ### MapX
 
 ⚠ Following [Sokube](https://www.sokube.io/en/home) recommendations, MapX database is not deployed in the k8s cluster. Make sure a working MapX database is accessible from the cluster.
 
+Deployment from the local Helm chart:
+
 ```sh
 helm install \
-  dev  helm-chart/mapx/ \
+  dev helm-chart/mapx/ \
+  --namespace mapx-dev \
+  --create-namespace \
+  -f helm-chart/mapx/values.yaml
+```
+
+Deployment from the online [Helm repository](https://git.unepgrid.ch/mapx/-/packages/helm/mapx/):
+
+```sh
+helm install \
+  dev git.unepgrid.ch/mapx \
   --namespace mapx-dev \
   --create-namespace \
   -f helm-chart/mapx/values.yaml
@@ -117,4 +142,4 @@ If a pre-populated instance of MapX is used, import the `userdata` folder into t
 
 ## Additional information
 
-The Helm package has been reviewed by [SixSq](https://sixsq.com/) in May 2023.
+The Helm package has been reviewed by [SixSq](https://sixsq.com/) in May and July 2023.
