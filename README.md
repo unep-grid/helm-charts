@@ -24,7 +24,9 @@ Optional but useful tools:
    export KUBECONFIG=<path to kubeconfig>
    ```
 
-2. Fill `./helm-chart/mapx/values.yaml` with the values needed for `kube-prometheus-stack` and MapX to work properly.
+2. Fill `./helm-chart/mapx/values.yaml` with the values required by MapX to be deployed in the k8s cluster.
+
+3. Fill `./utilities/kube_prometheus_stack/overrides.yaml` with the values required by `kube-prometheus-stack` to be deployed in the k8s cluster.
 
 ### Add Helm repositories
 
@@ -75,7 +77,7 @@ helm install \
   --wait
 ```
 
-List of other CSI drivers that could be used to manage storage: <https://kubernetes-csi.github.io/docs/drivers.html>
+List of alternative CSI drivers that could be used to manage storage: <https://kubernetes-csi.github.io/docs/drivers.html>
 
 #### Traefik
 
@@ -99,7 +101,7 @@ export TRAEFIK_EXTERNAL_IP=$(kubectl get services \
 
 #### Kube-prometheus-stack
 
-`./utilities/kube_prometheus_stack/prometheus-stack-overrides.yml` can be tweaked to personalize the deployment of the Prometheus stack.
+⚠ `./utilities/kube_prometheus_stack/overrides.yaml` uses values from `./helm-chart/mapx/values.yaml`. These two files must be completed before continuing with the deployment.
 
 ```sh
 helm install \
@@ -116,7 +118,9 @@ The installation of this set of Grafana dashboards is recommended: <https://gith
 
 ### MapX
 
-⚠ Following [Sokube](https://www.sokube.io/en/home) recommendations, MapX database is not deployed in the k8s cluster. Make sure a working MapX database is accessible from the cluster.
+⚠ Recommendation from [Sokube](https://www.sokube.io/en/home): databases should not be deployed in a k8s cluster especially for production.
+
+Make sure you have access to a functional MapX database from the cluster before deploying MapX.
 
 Deployment from the local Helm chart:
 
@@ -138,7 +142,7 @@ helm install \
   -f helm-chart/mapx/values.yaml
 ```
 
-If a pre-populated instance of MapX is used, import the `userdata` folder into the dedicated volume (e.g. `NFS` for the UniGe instance).
+If a pre-populated instance of MapX is used, import the `userdata` folder into the dedicated volume (e.g., `NFS` for the UniGe instance).
 
 ## Additional information
 

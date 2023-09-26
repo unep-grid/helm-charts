@@ -19,10 +19,19 @@ grafana:
   persistence:
     enabled: true
     size: 5Gi
+  adminPassword: secret
   sidecar:
     datasources:
       alertmanager:
         enabled: false
+  grafana.ini:
+    smtp:
+      enabled: true
+      from_address: secret
+      from_name: secret
+      host: secret
+      user: secret
+      password: secret
 
 extraManifests:
   - apiVersion: cert-manager.io/v1
