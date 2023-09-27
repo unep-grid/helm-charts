@@ -87,6 +87,7 @@ helm install \
   --namespace traefik \
   --create-namespace \
   --version 24.0.0 \
+  --set ports.web.redirectTo=websecure \
   --wait
 ```
 
