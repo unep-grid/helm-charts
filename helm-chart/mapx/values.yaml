@@ -14,7 +14,7 @@ nodeAffinity:
 api:
   replicas: 2
   image: fredmoser/mapx_api
-  tag: 1.12.4-patch.3
+  tag: 1.12.6
   resources:
     requests:
       memory: "512Mi"
@@ -26,7 +26,7 @@ api:
 app:
   replicas: 2
   image: fredmoser/mapx_app
-  tag: 1.12.4-patch.3
+  tag: 1.12.6
   resources:
     requests:
       memory: "512Mi"
