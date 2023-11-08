@@ -18,6 +18,9 @@ spec:
         network/net-backend: "true"
         network/net-frontend: "true"
         app: app
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/env-configmap.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/env-secret.yaml") . | sha256sum }}
     spec:
       affinity:
         nodeAffinity:

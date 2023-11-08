@@ -17,6 +17,9 @@ spec:
       labels:
         network/net-frontend: "true"
         app: geoserver
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/env-configmap.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/env-secret.yaml") . | sha256sum }}
     spec:
       affinity:
         nodeAffinity:

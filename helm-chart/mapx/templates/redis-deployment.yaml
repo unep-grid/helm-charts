@@ -17,6 +17,9 @@ spec:
       labels:
         app: redis
         network/net-backend: "true"
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/redis-config-configmap.yaml") . | sha256sum }}
+        checksum/health: {{ include (print $.Template.BasePath "/redis-health-configmap.yaml") . | sha256sum }}
     spec:
       affinity:
         nodeAffinity:
