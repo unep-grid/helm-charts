@@ -42,14 +42,26 @@ helm repo update
 
 ### Cluster utilities helm charts
 
+Helm provides a way to perform an install-or-upgrade as a single command. Use `helm upgrade` with the `--install` command. This will cause Helm to see if the release is already installed. If not, it will run an install. If it is, then the existing release will be upgraded.
+
+```sh
+helm upgrade \
+  --install \
+  <release_name> <chart_directory> \
+  --namespace <namespace_name> \
+  --create-namespace \
+  --values <values file>
+```
+
 #### Cert-manager
 
 ```sh
-helm install \
+helm upgrade \
+  --install \
   cert-manager jetstack/cert-manager \
   --namespace cert-manager \
   --create-namespace \
-  --version v1.13.0 \
+  --version v1.13.2 \
   --set installCRDs=true \
   --wait
 ```
@@ -69,11 +81,12 @@ kubctl apply -f ./utilities/cert_manager/
 Useful reading about the operation and deployment of Longhorn: <https://www.exoscale.com/syslog/longhorn-sks/>
 
 ```sh
-helm install \
+helm upgrade \
+  --install \
   longhorn longhorn/longhorn \
   --namespace longhorn-system \
   --create-namespace \
-  --version 1.5.1 \
+  --version 1.5.2 \
   --wait
 ```
 
@@ -82,11 +95,12 @@ List of alternative CSI drivers that could be used to manage storage: <https://k
 #### Traefik
 
 ```sh
-helm install \
+helm upgrade \
+  --install \
   traefik traefik/traefik \
   --namespace traefik \
   --create-namespace \
-  --version 24.0.0 \
+  --version 25.0.0 \
   --set ports.web.redirectTo=websecure \
   --wait
 ```
@@ -105,13 +119,14 @@ export TRAEFIK_EXTERNAL_IP=$(kubectl get services \
 ⚠ `./utilities/kube_prometheus_stack/overrides.yaml` uses values from `./helm-chart/mapx/values.yaml`. These two files must be completed before continuing with the deployment.
 
 ```sh
-helm install \
-  -f ./utilities/kube_prometheus_stack/overrides.yaml \
-  -f ./helm-chart/mapx/values.yaml \
+helm upgrade \
+  --install \
   prometheus-stack  prometheus-community/kube-prometheus-stack \
   --namespace prometheus-stack \
   --create-namespace \
-  --version 51.0.3 \
+  --version 52.1.0 \
+  --values ./utilities/kube_prometheus_stack/overrides.yaml \
+  --values ./helm-chart/mapx/values.yaml \
   --wait
 ```
 
@@ -126,21 +141,23 @@ Make sure you have access to a functional MapX database from the cluster before 
 Deployment from the local Helm chart:
 
 ```sh
-helm install \
+helm upgrade \
+  --install \
   dev helm-chart/mapx/ \
   --namespace mapx-dev \
   --create-namespace \
-  -f helm-chart/mapx/values.yaml
+  --values helm-chart/mapx/values.yaml
 ```
 
 Deployment from the online [Helm repository](https://git.unepgrid.ch/mapx/-/packages/helm/mapx/):
 
 ```sh
-helm install \
+helm upgrade \
+  --install \
   dev git.unepgrid.ch/mapx \
   --namespace mapx-dev \
   --create-namespace \
-  -f helm-chart/mapx/values.yaml
+  --values helm-chart/mapx/values.yaml
 ```
 
 If a pre-populated instance of MapX is used, import the `userdata` folder into the dedicated volume (e.g., `NFS` for the UniGe instance).
