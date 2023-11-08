@@ -1,6 +1,8 @@
 ### Helm ###
 # Chart dependencies
 **/charts/*.tgz
+# Charts
+mapx-*.tgz
 
 ### Custom ###
 uni-dev-values.yaml
