@@ -110,3 +110,13 @@ mapx:
   rootModeMembers: "[1]"
   mapboxToken: secret
   maxmindUrlDownload: secret
+
+# extra manifests to deploy as an array
+extraManifests:
+  []
+  # - apiVersion: v1
+  #   kind: ConfigMap
+  #   metadata:
+  #     name: mx-extra-config-{{ .Release.Name }}
+  #   data:
+  #     extra-data: "value"
