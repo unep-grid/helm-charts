@@ -50,7 +50,8 @@ helm upgrade \
   <release_name> <chart_directory> \
   --namespace <namespace_name> \
   --create-namespace \
-  --values <values file>
+  --values <values file> \
+  --wait
 ```
 
 #### Cert-manager
@@ -146,7 +147,8 @@ helm upgrade \
   dev helm-chart/mapx/ \
   --namespace mapx-dev \
   --create-namespace \
-  --values helm-chart/mapx/values.yaml
+  --values helm-chart/mapx/values.yaml \
+  --wait
 ```
 
 Deployment from the online [Helm repository](https://git.unepgrid.ch/mapx/-/packages/helm/mapx/):
@@ -157,7 +159,8 @@ helm upgrade \
   dev git.unepgrid.ch/mapx \
   --namespace mapx-dev \
   --create-namespace \
-  --values helm-chart/mapx/values.yaml
+  --values helm-chart/mapx/values.yaml \
+  --wait
 ```
 
 If a pre-populated instance of MapX is used, import the `userdata` folder into the dedicated volume (e.g., `NFS` for the UniGe instance).
