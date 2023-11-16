@@ -15,6 +15,9 @@ api:
   replicas: 2
   image: fredmoser/mapx_api
   tag: 1.12.7
+  # ensure that the mx-shared volume has the right permissions and ownership
+  # useful if mx-shared is an external volume mounted in the cluster e.g. NFS
+  initContainers: false
   resources:
     requests:
       memory: "512Mi"

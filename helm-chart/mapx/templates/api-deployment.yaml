@@ -39,8 +39,9 @@ spec:
         runAsGroup: 101
         fsGroup: 101
         fsGroupChangePolicy: "OnRootMismatch"
+      {{- if eq (.Values.api.initContainers | toString) "true" }}
       initContainers:
-        - name: nfs-owner-change
+        - name: mx-shared-checks
           image: busybox
           securityContext:
             runAsUser: 0
@@ -51,6 +52,7 @@ spec:
           volumeMounts:
             - name: mx-shared-{{ .Release.Name }}
               mountPath: /shared
+      {{- end }}
       containers:
         - name: mx-api-{{ .Release.Name }}
           image: {{ .Values.api.image | default "fredmoser/mapx_api" }}:{{ .Values.api.tag }}
