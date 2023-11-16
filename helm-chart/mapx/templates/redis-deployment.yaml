@@ -50,7 +50,7 @@ spec:
       restartPolicy: Always
       containers:
         - name: mx-redis-{{ .Release.Name }}
-          image: {{ .Values.redis.image | default "redis" }}:{{ .Values.redis.tag }}
+          image: {{ .Values.redis.image | default "redis" }}:{{ .Values.redis.tag | default "7.0.12-alpine3.18" }}
           args:
             - redis-server
             - /usr/local/etc/redis/redis.conf

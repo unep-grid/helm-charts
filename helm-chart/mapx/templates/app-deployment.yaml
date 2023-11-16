@@ -41,7 +41,7 @@ spec:
         fsGroupChangePolicy: "OnRootMismatch"
       containers:
         - name: mx-app-{{ .Release.Name }}
-          image: {{ .Values.app.image | default "fredmoser/mapx_app" }}:{{ .Values.app.tag }}
+          image: {{ .Values.app.image | default "fredmoser/mapx_app" }}:{{ .Values.app.tag | default .Chart.AppVersion }}
           imagePullPolicy: Always
           envFrom:
           - configMapRef:
