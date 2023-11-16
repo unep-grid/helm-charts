@@ -10,4 +10,4 @@ spec:
   storageClassName: {{ .Values.storageClassName }}
   resources:
     requests:
-      storage: 4Gi
+      storage: {{ .Values.geoserver.storage | default "4Gi" }}

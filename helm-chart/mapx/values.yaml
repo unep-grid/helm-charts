@@ -64,6 +64,7 @@ geoserver:
     limits:
       memory: "4Gi"
       cpu: "1000m"
+  storage: "4Gi"
 
 redis:
   image: redis
@@ -83,6 +84,7 @@ search:
     limits:
       memory: "2Gi"
       cpu: "1000m"
+  storage: "4Gi"
 
 postgres:
   host: db.staging.mapx.org
