@@ -116,8 +116,8 @@ mapx:
   mapboxToken: secret
   maxmindUrlDownload: secret
 
-# extra manifests to deploy as an array
-extraManifests:
+# additional manifests to deploy as an array
+additionalManifests:
   []
   # - apiVersion: v1
   #   kind: ConfigMap
