@@ -1,13 +1,13 @@
+{{- if eq (.Values.mapx.storageCustom | toString) "false" }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: mx-shared-{{ .Release.Name }}
 spec:
-  storageClassName: ""
-  volumeName: mx-shared-{{ .Release.Name }}
   accessModes:
     - ReadWriteMany
-  volumeMode: Filesystem
+  storageClassName: {{ .Values.storageClassName }}
   resources:
     requests:
-      storage: 50Gi
+      storage: {{ .Values.mapx.storage | default "50Gi" }}
+{{- end }}

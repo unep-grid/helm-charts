@@ -115,6 +115,8 @@ mapx:
   rootModeMembers: "[1]"
   mapboxToken: secret
   maxmindUrlDownload: secret
+  storageCustom: false
+  storage: "50Gi"
 
 # additional manifests to deploy as an array
 additionalManifests:
