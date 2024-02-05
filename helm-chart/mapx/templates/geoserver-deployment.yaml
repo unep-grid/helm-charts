@@ -15,6 +15,7 @@ spec:
     metadata:
       name: mx-geoserver-{{ .Release.Name }}
       labels:
+        network/net-backend: "true"
         network/net-frontend: "true"
         app: geoserver
       annotations:
