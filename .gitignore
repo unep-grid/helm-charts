@@ -3,7 +3,3 @@
 **/charts/*.tgz
 # Charts
 mapx-*.tgz
-
-### Custom ###
-uni-dev-values.yaml
-overrides_mapx.yaml

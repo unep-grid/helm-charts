@@ -21,9 +21,11 @@ Optional but useful tools:
    export KUBECONFIG=<path to kubeconfig>
    ```
 
-2. Fill `./helm-chart/mapx/values.yaml` with the values required by MapX to be deployed in the k8s cluster.
+2. Deploy utilities Helm charts
 
-3. Fill `./utilities/kube_prometheus_stack/overrides.yaml` with the values required by `kube-prometheus-stack` to be deployed in the k8s cluster.
+3. Fill `./helm-chart/mapx/values.yaml` with the values required by MapX to be deployed in the k8s cluster.
+
+4. Deploy MapX Helm chart
 
 ### Add Helm repositories
 
@@ -31,13 +33,11 @@ Optional but useful tools:
 helm repo add jetstack https://charts.jetstack.io
 helm repo add longhorn https://charts.longhorn.io
 helm repo add traefik https://traefik.github.io/charts
-helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-helm repo add grafana https://grafana.github.io/helm-charts
 helm repo add git.unepgrid.ch https://git.unepgrid.ch/api/packages/mapx/helm
 helm repo update
 ```
 
-### Cluster utilities helm charts
+### Cluster utilities Helm charts
 
 Helm provides a way to perform an install-or-upgrade as a single command. Use `helm upgrade` with the `--install` command. This will cause Helm to see if the release is already installed. If not, it will run an install. If it is, then the existing release will be upgraded.
 
@@ -136,27 +136,6 @@ export TRAEFIK_EXTERNAL_IP=$(kubectl get services \
     --namespace traefik \
     --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
 ```
-
-#### Kube-prometheus-stack
-
-⚠ `./utilities/kube_prometheus_stack/overrides.yaml` uses values from `./helm-chart/mapx/values.yaml`. These two files must be completed before continuing with the deployment.
-
-```sh
-helm upgrade \
-  --install \
-  prometheus-stack prometheus-community/kube-prometheus-stack \
-  --namespace prometheus-stack \
-  --create-namespace \
-  --version 52.1.0 \
-  --values ./utilities/kube_prometheus_stack/overrides.yaml \
-  --values ./helm-chart/mapx/values.yaml \
-  --atomic \
-  --cleanup-on-fail \
-  --timeout 3m \
-  --debug=true
-```
-
-The installation of this set of Grafana dashboards is recommended: <https://github.com/dotdc/grafana-dashboards-kubernetes/>
 
 ### MapX
 
