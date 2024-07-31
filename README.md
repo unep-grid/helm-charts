@@ -12,7 +12,6 @@ Install:
 Optional but useful tools:
 
 - [kubectx + kubens](https://github.com/ahmetb/kubectx#installation)
-- [krew](https://krew.sigs.k8s.io/docs/user-guide/setup/install/)
 
 ## Deployment
 
@@ -195,7 +194,7 @@ helm upgrade \
   --debug=true
 ```
 
-If a pre-populated instance of MapX is used, import the `userdata` folder into the dedicated volume (e.g., `NFS` for the UniGe instance).
+If a pre-populated instance of MapX is used, import the `userdata` folder into the dedicated volume.
 
 ## Additional information
 
