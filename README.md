@@ -214,7 +214,3 @@ helm upgrade \
   --timeout 3m \
   --debug=true
 ```
-
-## Additional information
-
-The Helm package has been reviewed by [SixSq](https://sixsq.com/) in May and July 2023.
