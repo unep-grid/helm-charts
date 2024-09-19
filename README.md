@@ -23,9 +23,15 @@ Optional but useful tools:
 
 2. Deploy utilities Helm charts
 
-3. Fill `./helm-chart/mapx/values.yaml` with the values required by MapX to be deployed in the k8s cluster.
+3. Fill `./charts/mapx/values.yaml` with the values required by MapX to be deployed in the k8s cluster.
 
 4. Deploy MapX Helm chart
+
+_Optionally:_
+
+5. Fill `./charts/mapx-documentation/values.yaml` with the values required by MapX documentation to be deployed in the k8s cluster.
+
+6. Deploy MapX documentation Helm chart
 
 ### Add Helm repositories
 
@@ -148,10 +154,10 @@ Deployment from the local Helm chart:
 ```sh
 helm upgrade \
   --install \
-  <release_name> helm-charts/mapx/ \
+  <release_name> charts/mapx/ \
   --namespace <namespace_name> \
   --create-namespace \
-  --values helm-charts/mapx/values.yaml \
+  --values charts/mapx/values.yaml \
   --atomic \
   --cleanup-on-fail \
   --timeout 3m \
@@ -166,7 +172,7 @@ helm upgrade \
   <release_name> git.unepgrid.ch/mapx \
   --namespace <namespace_name> \
   --create-namespace \
-  --values helm-charts/mapx/values.yaml \
+  --values charts/mapx/values.yaml \
   --atomic \
   --cleanup-on-fail \
   --timeout 3m \
@@ -184,10 +190,10 @@ Deployment from the local Helm chart:
 ```sh
 helm upgrade \
   --install \
-  <release_name> helm-charts/mapx-documentation/ \
+  <release_name> charts/mapx-documentation/ \
   --namespace <namespace_name> \
   --create-namespace \
-  --values helm-charts/mapx-documentation/values.yaml \
+  --values charts/mapx-documentation/values.yaml \
   --atomic \
   --cleanup-on-fail \
   --timeout 3m \
@@ -202,7 +208,7 @@ helm upgrade \
   <release_name> git.unepgrid.ch/mapx-documentation \
   --namespace <namespace_name> \
   --create-namespace \
-  --values helm-charts/mapx-documentation/values.yaml \
+  --values charts/mapx-documentation/values.yaml \
   --atomic \
   --cleanup-on-fail \
   --timeout 3m \
