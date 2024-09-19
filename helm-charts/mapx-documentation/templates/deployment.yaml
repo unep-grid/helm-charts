@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mx-{{ .Release.Name }}
+  labels:
+    app: documentation
+spec:
+  replicas: {{ .Values.docs.replicas | default 2 | int }}
+  selector:
+    matchLabels:
+      app: documentation
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      name: mx-{{ .Release.Name }}
+      labels:
+        app: documentation
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                {{- range $v := .Values.nodeAffinity }}
+                - {{ $v }}
+                {{- end }}
+      restartPolicy: Always
+      containers:
+        - name: mx-{{ .Release.Name }}
+          image: {{ .Values.docs.image | default "git.unepgrid.ch/mapx/mapx_documentation" }}:{{ .Values.docs.tag | default .Chart.AppVersion }}
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 80
+          startupProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 1
+            periodSeconds: 1
+            successThreshold: 1
+            failureThreshold: 60
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 3
+          resources:
+            requests:
+              memory: {{ .Values.docs.resources.requests.memory | default "128Mi" }}
+              cpu: {{ .Values.docs.resources.requests.cpu | default "100m" }}
+            limits:
+              memory: {{ .Values.docs.resources.limits.memory | default "512Mi" }}
+              cpu: {{ .Values.docs.resources.limits.cpu | default "500m" }}

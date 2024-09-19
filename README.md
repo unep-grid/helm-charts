@@ -148,10 +148,10 @@ Deployment from the local Helm chart:
 ```sh
 helm upgrade \
   --install \
-  <release_name> helm-chart/mapx/ \
+  <release_name> helm-charts/mapx/ \
   --namespace <namespace_name> \
   --create-namespace \
-  --values helm-chart/mapx/values.yaml \
+  --values helm-charts/mapx/values.yaml \
   --atomic \
   --cleanup-on-fail \
   --timeout 3m \
@@ -166,7 +166,7 @@ helm upgrade \
   <release_name> git.unepgrid.ch/mapx \
   --namespace <namespace_name> \
   --create-namespace \
-  --values helm-chart/mapx/values.yaml \
+  --values helm-charts/mapx/values.yaml \
   --atomic \
   --cleanup-on-fail \
   --timeout 3m \
@@ -174,6 +174,40 @@ helm upgrade \
 ```
 
 If a pre-populated instance of MapX is used, import the `userdata` folder into the dedicated volume.
+
+### MapX documentation
+
+Comprehensive [MapX documentation](https://github.com/unep-grid/mapx-documentation) is available and can be optionally deployed alongside MapX.
+
+Deployment from the local Helm chart:
+
+```sh
+helm upgrade \
+  --install \
+  <release_name> helm-charts/mapx-documentation/ \
+  --namespace <namespace_name> \
+  --create-namespace \
+  --values helm-charts/mapx-documentation/values.yaml \
+  --atomic \
+  --cleanup-on-fail \
+  --timeout 3m \
+  --debug=true
+```
+
+Deployment from the online [Helm repository](https://git.unepgrid.ch/mapx/-/packages/helm/mapx-documentation/):
+
+```sh
+helm upgrade \
+  --install \
+  <release_name> git.unepgrid.ch/mapx-documentation \
+  --namespace <namespace_name> \
+  --create-namespace \
+  --values helm-charts/mapx-documentation/values.yaml \
+  --atomic \
+  --cleanup-on-fail \
+  --timeout 3m \
+  --debug=true
+```
 
 ## Additional information
 

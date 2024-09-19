@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: docs.{{ .Values.endPoint }}
+  labels:
+    app: documentation
+spec:
+  secretName: docs.{{ .Values.endPoint }}
+  issuerRef:
+    name: {{ .Values.clusterIssuer }}
+    kind: ClusterIssuer
+  dnsNames:
+  - docs.{{ .Values.endPoint }}

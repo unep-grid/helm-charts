@@ -1,0 +1,17 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: mx-{{ .Release.Name }}
+  labels:
+    app: documentation
+spec:
+  entryPoints:
+    - {{ .Values.entryPoint }}
+  routes:
+  - kind: Rule
+    match: Host(`docs.{{ .Values.endPoint }}`)
+    services:
+    - name: mx-{{ .Release.Name }}
+      port: http
+  tls:
+    secretName: docs.{{ .Values.endPoint }}

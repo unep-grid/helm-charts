@@ -1,0 +1,20 @@
+apiVersion: v2
+name: mapx-documentation
+description: Official documentation of MapX, an online platform for managing geospatial data on natural resources, developed by UNEP/GRID-Geneva - a data centre resulting from the partnership between UN Environment Programme, the Swiss Federal Office for the Environment and the University of Geneva.
+version: 1.0.2
+appVersion: 1.13.8
+deprecated: false
+maintainers:
+  - name: "Thomas Piller"
+    email: "thomas.piller@unepgrid.ch"
+    url: "https://github.com/thomaspiller"
+keywords:
+  - online platform
+  - geospatial
+  - cartography
+  - documentation
+home: "https://www.mapx.org/"
+sources:
+  - "https://github.com/unep-grid/mapx"
+  - "https://github.com/unep-grid/mapx-documentation"
+icon: "https://unepgrid.ch/storage/app/media/activities/MapX_logo.png"
