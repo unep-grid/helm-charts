@@ -15,5 +15,6 @@ spec:
       port: 7700
     middlewares:
       - name: mx-search-{{ .Release.Name }}
+      - name: mx-{{ .Release.Name }}-compress
   tls:
     secretName: search.{{ .Values.endPoint }}

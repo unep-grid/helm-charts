@@ -15,5 +15,6 @@ spec:
       port: 3030
     middlewares:
       - name: mx-api-{{ .Release.Name }}
+      - name: mx-{{ .Release.Name }}-compress
   tls:
     secretName: api.{{ .Values.endPoint }}

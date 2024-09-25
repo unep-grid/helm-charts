@@ -15,5 +15,6 @@ spec:
       port: 3838
     middlewares:
       - name: mx-app-{{ .Release.Name }}
+      - name: mx-{{ .Release.Name }}-compress
   tls:
     secretName: app.{{ .Values.endPoint }}
