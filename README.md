@@ -1,4 +1,4 @@
-# MapX meets k8s
+# MapX Helm Charts
 
 Set of instructions to deploy [MapX](https://github.com/unep-grid/mapx) in a Kubernetes cluster.
 
