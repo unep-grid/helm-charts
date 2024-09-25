@@ -5,8 +5,7 @@ metadata:
   labels:
     app: search
 spec:
-  compress:
-    defaultEncoding: gzip
+  compress: {}
   rateLimit:
     average: 1000
     burst: 500

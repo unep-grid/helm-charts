@@ -5,8 +5,7 @@ metadata:
   labels:
     app: api
 spec:
-  compress:
-    defaultEncoding: gzip
+  compress: {}
   headers:
     customResponseHeaders:
       cacheControl: 'no-cache'
