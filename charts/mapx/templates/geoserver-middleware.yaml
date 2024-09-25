@@ -5,6 +5,8 @@ metadata:
   labels:
     app: geoserver
 spec:
+  compress:
+    defaultEncoding: gzip
   headers:
     accessControlAllowMethods:
       - 'GET'

@@ -1,0 +1,12 @@
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: mx-api-{{ .Release.Name }}
+  labels:
+    app: api
+spec:
+  compress:
+    defaultEncoding: gzip
+  headers:
+    customResponseHeaders:
+      cacheControl: 'no-cache'

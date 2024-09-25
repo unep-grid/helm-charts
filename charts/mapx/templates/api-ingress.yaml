@@ -13,5 +13,7 @@ spec:
     services:
     - name: mx-api-{{ .Release.Name }}
       port: 3030
+    middlewares:
+      - name: mx-api-{{ .Release.Name }}
   tls:
     secretName: api.{{ .Values.endPoint }}
