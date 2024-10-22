@@ -10,7 +10,7 @@ nodeAffinity:
 docs:
   replicas: 2
   image: git.unepgrid.ch/mapx/mapx_documentation
-  tag: 1.13.8
+  tag: 1.13.11
   resources:
     requests:
       memory: "128Mi"
