@@ -6,12 +6,19 @@ Set of instructions to deploy [MapX](https://github.com/unep-grid/mapx) in a Kub
 
 Install:
 
-- [kubctl](https://kubernetes.io/docs/tasks/tools/#kubectl) ([cheat sheet](https://kubernetes.io/docs/reference/kubectl/cheatsheet/))
+- [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl) ([cheat sheet](https://kubernetes.io/docs/reference/kubectl/cheatsheet/))
+- [kubectx + kubens](https://github.com/ahmetb/kubectx#installation)
 - [helm](https://helm.sh/docs/intro/install/)
 
-Optional but useful tools:
+It is recommended to configure autocompletion for these tools. Please refer to their documentation for detailed instructions (this may vary depending on the OS and terminal used).
 
-- [kubectx + kubens](https://github.com/ahmetb/kubectx#installation)
+Useful aliases:
+
+```bash
+alias k=kubectl
+alias kctx=kubectx
+alias kns=kubens
+```
 
 ## Deployment
 
