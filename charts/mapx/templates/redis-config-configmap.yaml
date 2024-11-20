@@ -5,7 +5,7 @@ metadata:
   labels:
     app: redis
 data:
-  redis.conf: |
+  redis.conf: |-
     bind 0.0.0.0
     protected-mode no
     port 6379

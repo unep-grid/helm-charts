@@ -99,7 +99,7 @@ spec:
               cpu: {{ .Values.redis.resources.cpu | default "1000m" }}
           volumeMounts:
             - name: mx-redis-config-{{ .Release.Name }}
-              mountPath: /usr/local/etc/redis/redis.conf
+              mountPath: /usr/local/etc/redis/
               readOnly: true
             - name: mx-redis-health-{{ .Release.Name }}
               mountPath: /health
