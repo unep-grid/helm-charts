@@ -57,6 +57,11 @@ spec:
                 secretKeyRef:
                   key: MAIL_PASSWORD
                   name: mx-secret-{{ .Release.Name }}
+            - name: MAPTILER_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  key: MAPTILER_TOKEN
+                  name: mx-secret-{{ .Release.Name }}
             - name: MAPX_MAPBOX_TOKEN
               valueFrom:
                 secretKeyRef:

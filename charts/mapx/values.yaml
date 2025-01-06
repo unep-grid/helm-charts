@@ -14,7 +14,7 @@ nodeAffinity:
 api:
   replicas: 2
   image: fredmoser/mapx_api
-  tag: 1.13.11
+  tag: 1.13.13-alpha.1
   # ensure that the mx-shared volume has the right permissions and ownership
   # useful if mx-shared is an external volume mounted in the cluster e.g. NFS
   initContainers: false
@@ -29,7 +29,7 @@ api:
 app:
   replicas: 2
   image: fredmoser/mapx_app
-  tag: 1.13.11
+  tag: 1.13.13-alpha.1
   resources:
     requests:
       memory: "384Mi"
@@ -112,6 +112,7 @@ mapx:
   devMembers: "[1]"
   projectCreators: "[1]"
   rootModeMembers: "[1]"
+  maptilerToken: secret
   mapboxToken: secret
   maxmindUrlDownload: secret
   storageCustom: false
