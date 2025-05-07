@@ -52,11 +52,11 @@ spec:
               name: mx-secret-{{ .Release.Name }}
           resources:
             requests:
-              memory: {{ .Values.routines.resources.requests.memory | default "256Mi" }}
+              memory: {{ .Values.routines.resources.requests.memory | default "384Mi" }}
               cpu: {{ .Values.routines.resources.requests.cpu | default "500m" }}
             limits:
-              memory: {{ .Values.routines.resources.limits.memory | default "512Mi" }}
-              cpu: {{ .Values.routines.resources.limits.cpu | default "2000m" }}
+              memory: {{ .Values.routines.resources.limits.memory | default "768Mi" }}
+              cpu: {{ .Values.routines.resources.limits.cpu | default "1000m" }}
           volumeMounts:
             - name: mx-shared-{{ .Release.Name }}
               mountPath: /shared

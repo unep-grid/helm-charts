@@ -81,7 +81,7 @@ spec:
           resources:
             requests:
               memory: {{ .Values.geoserver.resources.requests.memory | default "4Gi" }}
-              cpu: {{ .Values.geoserver.resources.requests.cpu | default "250m" }}
+              cpu: {{ .Values.geoserver.resources.requests.cpu | default "100m" }}
             limits:
               memory: {{ .Values.geoserver.resources.limits.memory | default "4Gi" }}
               cpu: {{ .Values.geoserver.resources.limits.cpu | default "1000m" }}
