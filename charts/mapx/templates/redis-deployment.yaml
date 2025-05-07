@@ -50,7 +50,7 @@ spec:
       restartPolicy: Always
       containers:
         - name: mx-redis-{{ .Release.Name }}
-          image: {{ .Values.redis.image | default "redis" }}:{{ .Values.redis.tag | default "7.0.12-alpine3.18" }}
+          image: {{ .Values.redis.image | default "redis" }}:{{ .Values.redis.tag | default "7.0.12" }}
           args:
             - redis-server
             - /usr/local/etc/redis/redis.conf
@@ -71,7 +71,7 @@ spec:
           readinessProbe:
             exec:
               command:
-                - /bin/sh
+                - /bin/bash
                 - -c
                 - /health/ping_readiness_local.sh 1 # same value as timeoutSeconds
             initialDelaySeconds: 20
@@ -82,7 +82,7 @@ spec:
           livenessProbe:
             exec:
               command:
-                - /bin/sh
+                - /bin/bash
                 - -c
                 - /health/ping_liveness_local.sh 5 # same value as timeoutSeconds
             initialDelaySeconds: 20
@@ -92,11 +92,11 @@ spec:
             failureThreshold: 5
           resources:
             requests:
-              memory: {{ .Values.redis.resources.memory | default "4Gi" }}
-              cpu: {{ .Values.redis.resources.cpu | default "1000m" }}
+              memory: {{ .Values.redis.resources.memory | default "1Gi" }}
+              cpu: {{ .Values.redis.resources.cpu | default "50m" }}
             limits:
-              memory: {{ .Values.redis.resources.memory | default "4Gi" }}
-              cpu: {{ .Values.redis.resources.cpu | default "1000m" }}
+              memory: {{ .Values.redis.resources.memory | default "1Gi" }}
+              cpu: {{ .Values.redis.resources.cpu | default "50m" }}
           volumeMounts:
             - name: mx-redis-config-{{ .Release.Name }}
               mountPath: /usr/local/etc/redis/

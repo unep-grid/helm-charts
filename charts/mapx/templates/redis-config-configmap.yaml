@@ -62,5 +62,5 @@ data:
     client-output-buffer-limit pubsub 32mb 8mb 60
     hz 10
     aof-rewrite-incremental-fsync yes
-    maxmemory {{ .Values.redis.resources.memory | default "4Gi" | trimSuffix "Gi" | int }}gb
+    maxmemory {{ .Values.redis.resources.memory | default "1Gi" | trimSuffix "Gi" | int }}gb
     maxmemory-policy allkeys-lru
