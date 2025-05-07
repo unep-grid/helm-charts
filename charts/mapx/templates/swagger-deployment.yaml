@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mx-swaggerui-{{ .Release.Name }}
+  labels:
+    app: swaggerui
+spec:
+  replicas: {{ .Values.swaggerui.replicaCount | default 1 }}
+  selector:
+    matchLabels:
+      app: swaggerui
+  template:
+    metadata:
+      name: mx-swaggerui-{{ .Release.Name }}
+      labels:
+        network/net-backend: "true"
+        network/net-frontend: "true"
+        app: swaggerui
+    spec:
+      containers:
+        - name: swaggerui
+          image: {{ .Values.swaggerui.image.repository }}:{{ .Values.swaggerui.image.tag }}
+          imagePullPolicy: {{ .Values.swaggerui.image.pullPolicy | default "IfNotPresent" }}
+          ports:
+            - name: swaggerui
+              containerPort: 8080
+          env:
+            - name: SWAGGER_JSON_URL
+              value: {{ .Values.postgrest.openapi.proxyUri | default "http://localhost/api" }}
+            - name: BASE_URL
+              value: "/docs"
+            - name: SUPPORTED_SUBMIT_METHODS
+              value: "['get']"
+          resources:
+            {{- toYaml .Values.swaggerui.resources | nindent 12 }}
+          {{- with .Values.swaggerui.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.swaggerui.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.swaggerui.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.swaggerui.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.swaggerui.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

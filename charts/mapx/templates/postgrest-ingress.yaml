@@ -1,0 +1,19 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: mx-postgrest-{{ .Release.Name }}
+  labels:
+    app: postgrest
+spec:
+  entryPoints:
+    - {{ .Values.entryPoint }}
+  routes:
+  - kind: Rule
+    match: Host(`postgrest.{{ .Values.endPoint }}`) && PathPrefix(`/api`)
+    services:
+    - name: mx-postgrest-{{ .Release.Name }}
+      port: 3000
+    middlewares:
+      - name: mx-postgrest-{{ .Release.Name }}
+  tls:
+    secretName: postgrest.{{ .Values.endPoint }}

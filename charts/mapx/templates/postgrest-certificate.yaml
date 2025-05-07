@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: postgrest.{{ .Values.endPoint }}
+  labels:
+    app: postgrest
+spec:
+  secretName: postgrest.{{ .Values.endPoint }}
+  issuerRef:
+    name: {{ .Values.clusterIssuer }}
+    kind: ClusterIssuer
+  dnsNames:
+  - postgrest.{{ .Values.endPoint }}

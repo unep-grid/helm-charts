@@ -99,6 +99,72 @@ postgres:
     userRead: secret
     userWrite: secret
 
+postgrest:
+  replicaCount: 1
+  image:
+    repository: postgrest/postgrest
+    tag: v12.2.12
+    pullPolicy: IfNotPresent
+  openapi:
+    mode: "follow-privileges"
+    proxyUri: "https://postgrest.endpoint/api"
+  database:
+    dbUri: "postgres://user:pass@host:5432/dbname"
+    schema: api
+    anonRole: web_anon
+  maxRows: "1000"
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  livenessProbe:
+    httpGet:
+      path: /
+      port: 3000
+    initialDelaySeconds: 30
+    timeoutSeconds: 5
+  readinessProbe:
+    httpGet:
+      path: /
+      port: 3000
+    initialDelaySeconds: 5
+    timeoutSeconds: 3
+
+swaggerui:
+    replicaCount: 1
+    image:
+      repository: swaggerapi/swagger-ui
+      tag: latest
+      pullPolicy: IfNotPresent
+    resources:
+      limits:
+        cpu: 200m
+        memory: 256Mi
+      requests:
+        cpu: 50m
+        memory: 64Mi
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    livenessProbe:
+      httpGet:
+        path: /docs
+        port: 8080
+      initialDelaySeconds: 30
+      timeoutSeconds: 5
+    readinessProbe:
+      httpGet:
+        path: /docs
+        port: 8080
+      initialDelaySeconds: 5
+      timeoutSeconds: 3
+
 smtp:
   user: secret
   password: secret

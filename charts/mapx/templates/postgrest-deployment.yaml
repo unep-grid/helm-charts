@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mx-postgrest-{{ .Release.Name }}
+  labels:
+    app: postgrest
+spec:
+  replicas: {{ .Values.postgrest.replicaCount | default 1 }}
+  selector:
+    matchLabels:
+      app: postgrest
+  template:
+    metadata:
+      name: mx-postgrest-{{ .Release.Name }}
+      labels:
+        network/net-backend: "true"
+        network/net-frontend: "true"
+        app: postgrest
+      annotations:
+        checksum/secret: {{ include (print $.Template.BasePath "/postgrest-secret.yaml") . | sha256sum }}
+    spec:
+      containers:
+        - name: postgrest
+          image: {{ .Values.postgrest.image.repository }}:{{ .Values.postgrest.image.tag }}
+          imagePullPolicy: {{ .Values.postgrest.image.pullPolicy | default "IfNotPresent" }}
+          ports:
+            - name: postgrest
+              containerPort: 3000
+          env:
+            - name: PGRST_DB_URI
+              valueFrom:
+                secretKeyRef:
+                  key: PGRST_DB_URI
+                  name: mx-postgrest-secret-{{ .Release.Name }}
+            - name: PGRST_DB_SCHEMAS
+              value: {{ .Values.postgrest.database.schema | default "public" | quote }}
+            - name: PGRST_DB_ANON_ROLE
+              value: {{ .Values.postgrest.database.anonRole | default "web_anon" | quote }}
+            - name: PGRST_MAX_ROWS
+              value: {{ .Values.postgrest.maxRows | default "1000" | quote }}
+            - name: PGRST_OPENAPI_MODE
+              value: {{ .Values.postgrest.openapi.mode | default "follow-privileges" | quote }}
+            - name: PGRST_OPENAPI_SERVER_PROXY_URI
+              value: {{ .Values.postgrest.openapi.proxyUri | default "" | quote }}
+          resources:
+            {{- toYaml .Values.postgrest.resources | nindent 12 }}
+          {{- with .Values.postgrest.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.postgrest.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.postgrest.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.postgrest.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.postgrest.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
