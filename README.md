@@ -1,18 +1,21 @@
 # MapX Helm Charts
 
-Set of instructions to deploy [MapX](https://github.com/unep-grid/mapx) in a Kubernetes cluster.
+This document provides a step-by-step guide for installing or updating **[MapX](https://github.com/unep-grid/mapx)** in a Kubernetes (k8s) cluster.
 
 ## Prerequisites
 
-Install:
+Ensure the following tools are installed:
 
 - [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl) ([cheat sheet](https://kubernetes.io/docs/reference/kubectl/cheatsheet/))
 - [kubectx + kubens](https://github.com/ahmetb/kubectx#installation)
 - [helm](https://helm.sh/docs/intro/install/)
 
-It is recommended to configure autocompletion for these tools. Please refer to their documentation for detailed instructions (this may vary depending on the OS and terminal used).
+> 🎯 **Tip**
+>
+> It is highly recommended to enable **autocompletion** for these tools to enhance your productivity.
+> Refer to each tool’s official documentation for platform-specific instructions.
 
-Useful aliases:
+### Suggested Aliases
 
 ```bash
 alias k=kubectl
@@ -68,15 +71,17 @@ helm upgrade \
   --debug=true
 ```
 
-```sh
---atomic               if set, upgrade process rolls back changes made in case of failed upgrade. The --wait flag will be set automatically if --atomic is used
---cleanup-on-fail      allow deletion of new resources created in this upgrade when upgrade fails
---debug                enable verbose output
---timeout duration     time to wait for any individual Kubernetes operation (like Jobs for hooks) (default 5m0s)
---wait                 if set, will wait until all Pods, PVCs, Services, and minimum number of Pods of a Deployment, StatefulSet, or ReplicaSet are in a ready state before marking the release as successful. It will wait for as long as --timeout
-```
+> ℹ️ **Helm Options Explanation**
+>
+> - `--atomic`: Roll back changes automatically if the deployment fails.
+> - `--cleanup-on-fail`: Delete new resources if the upgrade fails.
+> - `--timeout`: Maximum duration for operations (default is 5 minutes).
+> - `--debug`: Enable verbose output.
 
-⚠ Please note that the versions used in this document may not be the latest by the time you read it. If `--version` is not specified, the latest version is used automatically.
+> ⚠ **Note**
+>
+> If no `--version` is specified, the **latest available version** of the MapX Helm chart will be deployed.
+> Always run `helm repo update` beforehand to ensure local charts are in sync with the repository.
 
 #### Cert-manager
 
