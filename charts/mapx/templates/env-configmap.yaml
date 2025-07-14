@@ -31,6 +31,7 @@ data:
   MAIL_USER: {{ .Values.smtp.user }}
   MAPX_DB_LOG_LEVELS: '["ERROR","WARNING","MESSAGE","LOG","USER_ACTION"]'
   MAPX_DEV_MEMBERS: {{ .Values.mapx.devMembers | default "[]" | quote }}
+  MAPX_DOCS_URL: {{ .Values.mapx.docsUrl }}
   MAPX_MIRROR_RATE_LIMIT: "2000"
   MAPX_MIRROR_RATE_WINDOW_MINUTES: "15"
   MAPX_MODE: {{ .Values.mapx.mode | default "[]" | quote }}

@@ -178,6 +178,7 @@ mapx:
   devMembers: "[1]"
   projectCreators: "[1]"
   rootModeMembers: "[1]"
+  docsUrl: secret
   maptilerToken: secret
   mapboxToken: secret
   maxmindUrlDownload: secret
