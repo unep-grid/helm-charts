@@ -1,4 +1,4 @@
-{{- if eq (.Values.mapx.storageCustom | toString) "false" }}
+{{- if eq (.Values.mapx.persistence.storageCustom | toString) "false" }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -6,8 +6,8 @@ metadata:
 spec:
   accessModes:
     - ReadWriteMany
-  storageClassName: {{ .Values.storageClassName }}
+  storageClassName: {{ .Values.mapx.persistence.storageClassName }}
   resources:
     requests:
-      storage: {{ .Values.mapx.storage | default "50Gi" }}
+      storage: {{ .Values.mapx.persistence.size | default "50Gi" }}
 {{- end }}

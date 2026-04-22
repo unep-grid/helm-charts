@@ -2,8 +2,8 @@ apiVersion: v2
 name: mapx
 description: MapX is an online platform for managing and visualizing geospatial data on natural resources developed by GRID-Geneva - a data centre resulting from the partnership between UN Environment Programme, the Swiss Federal Office for the Environment and the University of Geneva.
 type: application
-version: 1.1.3
-appVersion: 1.13.18
+version: 1.1.4
+appVersion: 1.13.19
 deprecated: false
 maintainers:
   - name: "Thomas Piller"
