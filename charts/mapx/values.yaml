@@ -89,6 +89,7 @@ search:
   persistence:
     storageClassName: secret
     size: "4Gi"
+  logLevel: "info"
 
 postgres:
   host: db.staging.mapx.org

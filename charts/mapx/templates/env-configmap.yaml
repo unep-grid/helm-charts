@@ -62,4 +62,5 @@ data:
   POSTGRES_USER_WRITE: mapxw
   REDIS_HOST: mx-redis-{{ .Release.Name }}
   REDIS_PORT: "6379"
+  RUST_LOG: {{ .Values.search.logLevel | default "info" }}
   SHINY_PORT: "3838"
