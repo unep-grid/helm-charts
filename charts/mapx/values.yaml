@@ -116,8 +116,11 @@ mapx:
   projectCreators: "[1]"
   rootModeMembers: "[1]"
   docsUrl: secret
+  s3ProxyBaseUrl: secret
+  mirror:
+    rateLimit: "2000"
+    rateWindowMinutes: "15"
   maptilerToken: secret
-  mapboxToken: secret
   maxmindUrlDownload: secret
   persistence:
     storageCustom: false

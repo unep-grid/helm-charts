@@ -32,8 +32,8 @@ data:
   MAPX_DB_LOG_LEVELS: '["ERROR","WARNING","MESSAGE","LOG","USER_ACTION"]'
   MAPX_DEV_MEMBERS: {{ .Values.mapx.devMembers | default "[]" | quote }}
   MAPX_DOCS_URL: {{ .Values.mapx.docsUrl }}
-  MAPX_MIRROR_RATE_LIMIT: "2000"
-  MAPX_MIRROR_RATE_WINDOW_MINUTES: "15"
+  MAPX_MIRROR_RATE_LIMIT: {{ .Values.mapx.mirror.rateLimit | default "2000" | quote }}
+  MAPX_MIRROR_RATE_WINDOW_MINUTES: {{ .Values.mapx.mirror.rateWindowMinutes | default "15" | quote }}
   MAPX_MODE: {{ .Values.mapx.mode | default "[]" | quote }}
   MAPX_PATH_APP: /app
   MAPX_PATH_DOWNLOAD: /shared/download
@@ -43,6 +43,7 @@ data:
   MAPX_PROJECT_CREATORS: {{ .Values.mapx.projectCreators | default "[]" | quote }}
   MAPX_PROJECT_DEFAULT: {{ .Values.mapx.projectDefault }}
   MAPX_ROOT_MODE_MEMBERS: {{ .Values.mapx.rootModeMembers | default "[]" | quote }}
+  MAPX_S3_PROXY_BASE_URL: {{ .Values.mapx.s3ProxyBaseUrl }}
   MEILI_HOST: mx-search-{{ .Release.Name }}
   MEILI_HOST_PUBLIC: search.{{ .Values.endPoint }}
   MEILI_NO_ANALYTICS: "true"
