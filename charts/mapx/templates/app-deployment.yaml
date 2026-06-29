@@ -62,11 +62,6 @@ spec:
                 secretKeyRef:
                   key: MAPTILER_TOKEN
                   name: mx-secret-{{ .Release.Name }}
-            - name: MAPX_MAPBOX_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  key: MAPX_MAPBOX_TOKEN
-                  name: mx-secret-{{ .Release.Name }}
             - name: MEILI_MASTER_KEY
               valueFrom:
                 secretKeyRef:
