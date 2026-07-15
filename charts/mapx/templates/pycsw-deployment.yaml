@@ -1,0 +1,93 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mx-meta-{{ .Release.Name }}
+  labels:
+    app: meta
+spec:
+  replicas: {{ .Values.pycsw.replicas | default 2 | int }}
+  selector:
+    matchLabels:
+      app: meta
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      name: mx-meta-{{ .Release.Name }}
+      labels:
+        network/net-frontend: "true"
+        app: meta
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/env-configmap.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/env-secret.yaml") . | sha256sum }}
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                {{- range $v := .Values.nodeAffinity }}
+                - {{ $v }}
+                {{- end }}
+      restartPolicy: Always
+      containers:
+        - name: mx-meta-{{ .Release.Name }}
+          image: {{ .Values.pycsw.image | default "fredmoser/mapx_pycsw" }}:{{ .Values.pycsw.tag | default "3.0-dev-mapx.1" }}
+          imagePullPolicy: Always
+          securityContext:
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          envFrom:
+          - configMapRef:
+              name: mx-env-{{ .Release.Name }}
+          env:
+            - name: POSTGRES_USER_READ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: POSTGRES_USER_READ_PASSWORD
+                  name: mx-secret-{{ .Release.Name }}
+          ports:
+            - name: meta
+              containerPort: 8000
+          startupProbe:
+            tcpSocket:
+              port: meta
+            periodSeconds: 5
+            timeoutSeconds: 2
+            failureThreshold: 24
+            successThreshold: 1
+          livenessProbe:
+            tcpSocket:
+              port: meta
+            periodSeconds: 20
+            timeoutSeconds: 2
+            failureThreshold: 3
+            successThreshold: 1
+          readinessProbe:
+            httpGet:
+              port: meta
+              scheme: HTTP
+              path: "/csw?service=CSW&version=2.0.2&request=GetCapabilities"
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+            successThreshold: 1
+          resources:
+            requests:
+              memory: {{ .Values.pycsw.resources.requests.memory | default "384Mi" }}
+              cpu: {{ .Values.pycsw.resources.requests.cpu | default "50m" }}
+            limits:
+              memory: {{ .Values.pycsw.resources.limits.memory | default "512Mi" }}
+              cpu: {{ .Values.pycsw.resources.limits.cpu | default "200m" }}
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: tmp
+          emptyDir: {}

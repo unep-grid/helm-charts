@@ -61,6 +61,8 @@ data:
   POSTGRES_USER_CUSTOM: mapxc
   POSTGRES_USER_READ: mapxr
   POSTGRES_USER_WRITE: mapxw
+  PYCSW_PUBLIC_URL: {{ .Values.protocol }}meta.{{ .Values.endPoint }}
+  PYCSW_TABLE: {{ .Values.pycsw.table | default "mx_pycsw_records" | quote }}
   REDIS_HOST: mx-redis-{{ .Release.Name }}
   REDIS_PORT: "6379"
   RUST_LOG: {{ .Values.search.logLevel | default "info" }}

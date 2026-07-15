@@ -91,6 +91,19 @@ search:
     size: "4Gi"
   logLevel: "info"
 
+pycsw:
+  replicas: 2
+  image: fredmoser/mapx_pycsw
+  tag: 3.0-dev-mapx.1
+  resources:
+    requests:
+      memory: "384Mi"
+      cpu: "50m"
+    limits:
+      memory: "512Mi"
+      cpu: "200m"
+  table: mx_pycsw_records
+
 postgres:
   host: db.staging.mapx.org
   db: mapx
