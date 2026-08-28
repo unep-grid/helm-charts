@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mx-maintenance-{{ .Release.Name }}
+  labels:
+    app: maintenance
+spec:
+  replicas: {{ .Values.maintenance.replicas | default 2 | int }}
+  selector:
+    matchLabels:
+      app: maintenance
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      name: mx-maintenance-{{ .Release.Name }}
+      labels:
+        network/net-frontend: "true"
+        app: maintenance
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/maintenance-configmap.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/env-secret.yaml") . | sha256sum }}
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                {{- range $v := .Values.nodeAffinity }}
+                - {{ $v }}
+                {{- end }}
+      restartPolicy: Always
+      containers:
+        - name: mx-maintenance-{{ .Release.Name }}
+          image: {{ .Values.maintenance.image | default "fredmoser/mapx_maintenance" }}:{{ .Values.maintenance.tag | default "0.1.0" }}
+          imagePullPolicy: Always
+          securityContext:
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          envFrom:
+            - configMapRef:
+                name: mx-maintenance-{{ .Release.Name }}
+          env:
+            - name: MAPTILER_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: mx-secret-{{ .Release.Name }}
+                  key: MAPTILER_TOKEN
+          ports:
+            - name: http
+              containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 1
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            requests:
+              memory: {{ .Values.maintenance.resources.requests.memory | default "16Mi" }}
+              cpu: {{ .Values.maintenance.resources.requests.cpu | default "10m" }}
+            limits:
+              memory: {{ .Values.maintenance.resources.limits.memory | default "64Mi" }}
+              cpu: {{ .Values.maintenance.resources.limits.cpu | default "100m" }}
+              

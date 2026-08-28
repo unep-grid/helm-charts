@@ -12,7 +12,7 @@ nodeAffinity:
 api:
   replicas: 2
   image: fredmoser/mapx_api
-  tag: 1.13.20-alpha.1
+  tag: 1.14.1-alpha.12
   # ensure that the mx-shared volume has the right permissions and ownership
   # useful if mx-shared is an external volume mounted in the cluster e.g. NFS
   initContainers: false
@@ -27,7 +27,7 @@ api:
 app:
   replicas: 2
   image: fredmoser/mapx_app
-  tag: 1.13.20-alpha.1
+  tag: 1.14.1-alpha.12
   resources:
     requests:
       memory: "384Mi"
@@ -45,9 +45,22 @@ routines:
       memory: "768Mi"
       cpu: "1000m"
 
+maintenance:
+  replicas: 2
+  image: fredmoser/mapx_maintenance
+  tag: 0.1.0
+  timestampEnd: "2026-08-28T14:00:00+02:00"
+  resources:
+    requests:
+      cpu: 10m
+      memory: 16Mi
+    limits:
+      cpu: 100m
+      memory: 64Mi
+
 geoserver:
   image: git.unepgrid.ch/mapx/mapx_geoserver
-  tag: 2.28.3
+  tag: 2.28.5
   admin:
     username: secret
     password: secret
@@ -76,8 +89,8 @@ redis:
     cpu: "50m"
 
 search:
-  image: fredmoser/meili
-  tag: 0.20.0-alpine
+  image: fredmoser/mapx_search
+  tag: 1.48.2
   masterKey: secret
   resources:
     requests:
@@ -119,7 +132,7 @@ postgrest:
   replicaCount: 1
   image:
     repository: postgrest/postgrest
-    tag: v12.2.12
+    tag: v16.2
     pullPolicy: IfNotPresent
   openapi:
     mode: "follow-privileges"

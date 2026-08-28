@@ -38,11 +38,11 @@ spec:
           image: {{ .Values.pycsw.image | default "fredmoser/mapx_pycsw" }}:{{ .Values.pycsw.tag | default "3.0-dev-mapx.1" }}
           imagePullPolicy: Always
           securityContext:
-          readOnlyRootFilesystem: true
-          allowPrivilegeEscalation: false
-          capabilities:
-            drop:
-              - ALL
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
           envFrom:
           - configMapRef:
               name: mx-env-{{ .Release.Name }}
