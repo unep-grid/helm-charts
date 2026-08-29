@@ -46,6 +46,8 @@ routines:
       cpu: "1000m"
 
 maintenance:
+  # Route the application IngressRoute to the maintenance service when true.
+  active: false
   replicas: 2
   image: fredmoser/mapx_maintenance
   tag: 0.1.0
