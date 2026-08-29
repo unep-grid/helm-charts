@@ -1,3 +1,6 @@
+{{- if and .Values.maintenance.workloadsScaledDown (not .Values.maintenance.routeActive) }}
+{{- fail "maintenance.workloadsScaledDown requires maintenance.routeActive to be true" }}
+{{- end }}
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
@@ -11,7 +14,7 @@ spec:
   - kind: Rule
     match: Host(`app.{{ .Values.endPoint }}`)
     services:
-    {{- if .Values.maintenance.active }}
+    {{- if .Values.maintenance.routeActive }}
     - name: mx-maintenance-{{ .Release.Name }}
       port: 80
     {{- else }}

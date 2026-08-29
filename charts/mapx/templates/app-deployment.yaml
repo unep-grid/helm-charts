@@ -5,7 +5,7 @@ metadata:
   labels:
     app: app
 spec:
-  replicas: {{ if .Values.maintenance.active }}0{{ else }}{{ .Values.app.replicas | default 4 | int }}{{ end }}
+  replicas: {{ if .Values.maintenance.workloadsScaledDown }}0{{ else }}{{ .Values.app.replicas | default 4 | int }}{{ end }}
   selector:
     matchLabels:
       app: app

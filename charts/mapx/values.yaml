@@ -46,12 +46,16 @@ routines:
       cpu: "1000m"
 
 maintenance:
+  # Enter maintenance by enabling routeActive first, then workloadsScaledDown.
+  # Leave maintenance by disabling workloadsScaledDown first, then routeActive.
   # Route the application IngressRoute to the maintenance service when true.
-  active: false
+  routeActive: false
+  # Scale application workloads to zero when true. Redis remains running.
+  workloadsScaledDown: false
   replicas: 2
   image: fredmoser/mapx_maintenance
   tag: 0.1.0
-  timestampEnd: "2026-08-28T14:00:00+02:00"
+  timestampEnd: "2026-08-28T14:00:00+02:00" # ISO 8601 date-time
   resources:
     requests:
       cpu: 10m

@@ -5,7 +5,7 @@ metadata:
   labels:
     app: meta
 spec:
-  replicas: {{ if .Values.maintenance.active }}0{{ else }}{{ .Values.pycsw.replicas | default 2 | int }}{{ end }}
+  replicas: {{ if .Values.maintenance.workloadsScaledDown }}0{{ else }}{{ .Values.pycsw.replicas | default 2 | int }}{{ end }}
   selector:
     matchLabels:
       app: meta
