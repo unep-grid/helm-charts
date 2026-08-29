@@ -5,7 +5,7 @@ metadata:
   labels:
     app: swaggerui
 spec:
-  replicas: {{ .Values.swaggerui.replicaCount | default 1 }}
+  replicas: {{ if .Values.maintenance.active }}0{{ else }}{{ .Values.swaggerui.replicaCount | default 1 }}{{ end }}
   selector:
     matchLabels:
       app: swaggerui

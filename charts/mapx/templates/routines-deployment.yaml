@@ -5,7 +5,7 @@ metadata:
   labels:
     app: routines
 spec:
-  replicas: 1
+  replicas: {{ if .Values.maintenance.active }}0{{ else }}1{{ end }}
   selector:
     matchLabels:
       app: routines

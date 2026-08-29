@@ -5,7 +5,7 @@ metadata:
   labels:
     app: search
 spec:
-  replicas: 1
+  replicas: {{ if .Values.maintenance.active }}0{{ else }}1{{ end }}
   selector:
     matchLabels:
       app: search
