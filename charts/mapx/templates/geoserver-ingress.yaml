@@ -11,8 +11,13 @@ spec:
   - kind: Rule
     match: Host(`geoserver.{{ .Values.endPoint }}`)
     services:
+    {{- if .Values.maintenance.routeActive }}
+    - name: mx-maintenance-{{ .Release.Name }}
+      port: 80
+    {{- else }}
     - name: mx-geoserver-{{ .Release.Name }}
       port: 9000
+    {{- end }}
     middlewares:
       - name: mx-geoserver-{{ .Release.Name }}
       - name: mx-{{ .Release.Name }}-compress

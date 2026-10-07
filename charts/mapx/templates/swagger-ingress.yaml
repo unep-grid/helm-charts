@@ -11,7 +11,12 @@ spec:
   - kind: Rule
     match: Host(`postgrest.{{ .Values.endPoint }}`) && PathPrefix(`/docs`)
     services:
+    {{- if .Values.maintenance.routeActive }}
+    - name: mx-maintenance-{{ .Release.Name }}
+      port: 80
+    {{- else }}
     - name: mx-swaggerui-{{ .Release.Name }}
       port: 8080
+    {{- end }}
   tls:
     secretName: postgrest.{{ .Values.endPoint }}

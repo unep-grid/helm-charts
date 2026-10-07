@@ -3,4 +3,6 @@ kind: ConfigMap
 metadata:
   name: mx-maintenance-{{ .Release.Name }}
 data:
-  TIMESTAMP_END: {{ .Values.maintenance.timestampEnd | quote }}
+  MAINTENANCE_API_HOST_PREFIX: {{ .Values.maintenance.apiHostPrefix | default "api." | quote }}
+  MAINTENANCE_END: {{ .Values.maintenance.end | quote }}
+  PORT: "8080"

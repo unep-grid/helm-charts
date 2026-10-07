@@ -12,7 +12,7 @@ nodeAffinity:
 api:
   replicas: 2
   image: fredmoser/mapx_api
-  tag: 1.14.1-alpha.12
+  tag: 1.14.1-beta.1
   # ensure that the mx-shared volume has the right permissions and ownership
   # useful if mx-shared is an external volume mounted in the cluster e.g. NFS
   initContainers: false
@@ -27,7 +27,7 @@ api:
 app:
   replicas: 2
   image: fredmoser/mapx_app
-  tag: 1.14.1-alpha.12
+  tag: 1.14.1-beta.1
   resources:
     requests:
       memory: "384Mi"
@@ -54,8 +54,9 @@ maintenance:
   workloadsScaledDown: false
   replicas: 2
   image: fredmoser/mapx_maintenance
-  tag: 0.1.0
-  timestampEnd: "2026-08-28T14:00:00+02:00" # ISO 8601 date-time
+  tag: 0.1.1
+  apiHostPrefix: "api."
+  end: "2026-08-28T14:00:00+02:00" # ISO 8601 date-time
   resources:
     requests:
       cpu: 10m

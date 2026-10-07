@@ -11,8 +11,13 @@ spec:
   - kind: Rule
     match: Host(`postgrest.{{ .Values.endPoint }}`) && PathPrefix(`/api`)
     services:
+    {{- if .Values.maintenance.routeActive }}
+    - name: mx-maintenance-{{ .Release.Name }}
+      port: 80
+    {{- else }}
     - name: mx-postgrest-{{ .Release.Name }}
       port: 3000
+    {{- end }}
     middlewares:
       - name: mx-postgrest-{{ .Release.Name }}
   tls:

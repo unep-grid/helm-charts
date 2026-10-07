@@ -11,7 +11,12 @@ spec:
   - kind: Rule
     match: Host(`meta.{{ .Values.endPoint }}`)
     services:
+    {{- if .Values.maintenance.routeActive }}
+    - name: mx-maintenance-{{ .Release.Name }}
+      port: 80
+    {{- else }}
     - name: mx-meta-{{ .Release.Name }}
       port: 8000
+    {{- end }}
   tls:
     secretName: meta.{{ .Values.endPoint }}
