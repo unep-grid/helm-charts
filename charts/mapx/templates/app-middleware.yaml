@@ -13,4 +13,10 @@ spec:
     accessControlMaxAge: 100
     addVaryHeader: true
     customResponseHeaders:
-      cacheControl: 'no-cache'
+    {{- if .Values.maintenance.routeActive }}
+      Cache-Control: "no-store, no-cache, must-revalidate, max-age=0"
+      Pragma: "no-cache"
+      Expires: "0"
+    {{- else }}
+      Cache-Control: "no-cache"
+    {{- end }}

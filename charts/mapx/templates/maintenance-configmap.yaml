@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mx-maintenance-{{ .Release.Name }}
+data:
+  MAINTENANCE_API_HOST_PREFIX: {{ .Values.maintenance.apiHostPrefix | default "api." | quote }}
+  MAINTENANCE_END: {{ .Values.maintenance.end | quote }}
+  PORT: "8080"

@@ -12,7 +12,7 @@ nodeAffinity:
 api:
   replicas: 2
   image: fredmoser/mapx_api
-  tag: 1.13.19
+  tag: 1.14.1
   # ensure that the mx-shared volume has the right permissions and ownership
   # useful if mx-shared is an external volume mounted in the cluster e.g. NFS
   initContainers: false
@@ -27,7 +27,7 @@ api:
 app:
   replicas: 2
   image: fredmoser/mapx_app
-  tag: 1.13.19
+  tag: 1.14.1
   resources:
     requests:
       memory: "384Mi"
@@ -45,9 +45,29 @@ routines:
       memory: "768Mi"
       cpu: "1000m"
 
+maintenance:
+  # Enter maintenance by enabling routeActive first, then workloadsScaledDown.
+  # Leave maintenance by disabling workloadsScaledDown first, then routeActive.
+  # Route the application IngressRoute to the maintenance service when true.
+  routeActive: false
+  # Scale application workloads to zero when true. Redis remains running.
+  workloadsScaledDown: false
+  replicas: 2
+  image: fredmoser/mapx_maintenance
+  tag: 0.1.1
+  apiHostPrefix: "api."
+  end: "2026-10-28T14:00:00+02:00" # ISO 8601 date-time
+  resources:
+    requests:
+      cpu: 10m
+      memory: 16Mi
+    limits:
+      cpu: 100m
+      memory: 64Mi
+
 geoserver:
   image: git.unepgrid.ch/mapx/mapx_geoserver
-  tag: 2.28.3
+  tag: 2.28.5
   admin:
     username: secret
     password: secret
@@ -76,8 +96,8 @@ redis:
     cpu: "50m"
 
 search:
-  image: fredmoser/meili
-  tag: 0.20.0-alpine
+  image: fredmoser/mapx_search
+  tag: 1.48.2
   masterKey: secret
   resources:
     requests:
@@ -90,6 +110,19 @@ search:
     storageClassName: secret
     size: "4Gi"
   logLevel: "info"
+
+pycsw:
+  replicas: 2
+  image: fredmoser/mapx_pycsw
+  tag: 3.0-dev-mapx.1
+  resources:
+    requests:
+      memory: "384Mi"
+      cpu: "50m"
+    limits:
+      memory: "512Mi"
+      cpu: "200m"
+  table: mx_pycsw_records
 
 postgres:
   host: db.staging.mapx.org

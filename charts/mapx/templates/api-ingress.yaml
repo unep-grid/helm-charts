@@ -11,8 +11,13 @@ spec:
   - kind: Rule
     match: Host(`api.{{ .Values.endPoint }}`)
     services:
+    {{- if .Values.maintenance.routeActive }}
+    - name: mx-maintenance-{{ .Release.Name }}
+      port: 80
+    {{- else }}
     - name: mx-api-{{ .Release.Name }}
       port: 3030
+    {{- end }}
     middlewares:
       - name: mx-api-{{ .Release.Name }}
       - name: mx-{{ .Release.Name }}-compress

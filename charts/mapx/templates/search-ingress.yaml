@@ -11,8 +11,13 @@ spec:
   - kind: Rule
     match: Host(`search.{{ .Values.endPoint }}`)
     services:
+    {{- if .Values.maintenance.routeActive }}
+    - name: mx-maintenance-{{ .Release.Name }}
+      port: 80
+    {{- else }}
     - name: mx-search-{{ .Release.Name }}
       port: 7700
+    {{- end }}
     middlewares:
       - name: mx-search-{{ .Release.Name }}
       - name: mx-{{ .Release.Name }}-compress
